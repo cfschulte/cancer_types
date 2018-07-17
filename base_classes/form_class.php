@@ -41,8 +41,8 @@ class form_class {
             $this->editing_userid = 'cfschulte';  // this userid comes from check_login 
         }
 
-        $this->editing_user_initials = $this->initials($this->editing_userid);  
-        $this->editing_user_privileges = $this->privileges($this->editing_userid);  
+//         $this->editing_user_initials = $this->initials($this->editing_userid);  
+//         $this->editing_user_privileges = $this->privileges($this->editing_userid);  
         
         if(!empty($_POST) ) {
             $this->handle_post($_POST);
@@ -92,9 +92,8 @@ class form_class {
  // and then augmented.
     function jscript_list() {
 ?>
-    <script type="text/javascript" src="/cancer_types/js/jquery.js"></script>
-    <script type="text/javascript" src="/cancer_types/js/jquery-ui/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/cancer_types/js/logout.js"></script>
+    <script type="text/javascript" src="/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/jquery/jquery-ui/jquery-ui.min.js"></script>
      
     <script type="text/javascript" src="/cancer_types/js/date_handler.js"></script>
     <script type="text/javascript" src="/cancer_types/js/delete.js"></script>
@@ -112,7 +111,7 @@ class form_class {
     <link rel="Stylesheet" type="text/css" href="/cancer_types/css/base.css" />
     <link rel="Stylesheet" type="text/css" href="/cancer_types/css/tables.css" />
     <link rel="Stylesheet" type="text/css" href="/cancer_types/css/forms.css" />
-    <link rel="Stylesheet" type="text/css" href="/cancer_types/js/jquery-ui/jquery-ui.min.css" />
+    <link rel="Stylesheet" type="text/css" href="/jquery/jquery-ui/jquery-ui.min.css" />
 
 <?php 
     }
@@ -169,10 +168,11 @@ class form_class {
     $this->additionalHeaderStuff();
 ?>
  </div>
+ </div>
  <div style="clear:both;"></div>
 <?php 
 //  <div style="clear:both;"></div> used to be in menu.php, but this is more flexible
-     include "../menu.php";
+//      include "../menu.php";
    }
 
  /*************************************************************************/  
@@ -295,14 +295,19 @@ class form_class {
     /////////////
     // get the largest primary ID - lots of these are auto-increment, so this is mostly for display.
     function getLargestPrimaryID() {
-
-        $url = "SELECT MAX(" . $this->primary_key . ") AS id FROM " . $this->table_name;
-
+      
         $db_obj = new db_class();
-        $db_table = $db_obj->getTableNoParams($url);
+        $table_count =  $db_obj->tableCount($this->table_name);
+        if($table_count > 0){
+            $sql = "SELECT MAX(" . $this->primary_key . ") AS id FROM " . $this->table_name ;
+            $db_table = $db_obj->getTableNoParams($sql);
+            $largest_id = $db_table[0][id];
+        } else {
+            $largest_id = 0;
+        }
         $db_obj->closeDB();
-   
-       return $db_table[0][id];
+    
+       return $largest_id;
     }
  
   

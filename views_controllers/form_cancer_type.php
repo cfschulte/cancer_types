@@ -1,17 +1,19 @@
 <?php
-// edit_product.php -  Tue May 1 12:12:02 CDT 2018
+// form_cancer_type.php -  Tue May 1 12:12:02 CDT 2018
 // 
 
 require_once "../essentials.php";
 require_once "form_class.php";
 require_once "inter_table_access.php";
 
-class edit_product extends form_class {
+class form_cancer_type extends form_class {
 
     protected $largestProductID;
 
     protected $is_new;
+    protected $is_find_form;
     protected $id;
+    protected $cancer_type;
     protected $synopsis;
     protected $overview;
     protected $primary_anatomical_site;
@@ -20,7 +22,7 @@ class edit_product extends form_class {
 
 /*************************************************************************/   
     function __construct() {
-        parent::__construct('products', 'id','products.php');
+        parent::__construct('cancer_type_list', 'id','table_cancer_type.php');
         $this->largestProductID = $this->getLargestPrimaryID();   
         $this->is_new = '0';
         $this->is_clone = FALSE;
@@ -36,11 +38,11 @@ class edit_product extends form_class {
 ?>
     <div id="form_wrap">
     <a class="faux_button" id="done_goback_button" href="#">Go Back</a>
-<?php  if(! $this->is_find_form ): ?>
+<?php  if(! $this->is_find_form AND ! $this->is_new): ?>
      <button class="semi_faux" id="clone_this" href="#" <?php if( $this->is_new == 1 ){ echo 'disabled';}  ?> >Clone</button>
-        <a class="faux_button" href="/build_lab_inventory/forms/edit_product.php?new=yes">New Product</a>
+        <a class="faux_button" href="/build_lab_inventory/forms/form_cancer_type.php?new=yes">New Cancer Type</a>
      <span class="right"><a class="faux_button" id="delete" href="#">Delete</a></span>
-<?php  else: ?>
+<?php  elseif($this->is_find_form) : ?>
         <span style="float:right">
         <button class="search_button"  id="search_button" name="search_button" >Search</button>
         <b>Match:</b> <select class="semi_faux"  id="conjunction"><option value="OR">Any</option><option value="AND">All</option></select> Fields
@@ -64,7 +66,7 @@ class edit_product extends form_class {
      
 <?php  if(! $this->is_find_form ): ?>
      <input type="hidden" name="id" value="<?php echo $this->id ?>">
-     <span class="tag">ID:</span> <b><?php echo $this->id ?></b><br>
+     <span class="tag">ID:</span> <b><?php echo $this->id ?></b><br><br>
 <?php  endif ?>
      <input type="hidden" name="is_new" value="<?php echo $this->is_new ?>">
      <input type="hidden" name="table" value="cancer_type_list">
@@ -72,11 +74,18 @@ class edit_product extends form_class {
      <input type="hidden" name="title_input"  value="cancertype"> 
      
      
- 
+     <span class="tag">Cancer Type:</span>   <input  class="info" type="text" name="cancer_type" size="95" value="<?php echo $this->cancer_type ?>">  <br>
+     <span class="tag">Synopsis</span>   <input  class="info" type="text" name="synopsis" size="95" value="<?php echo $this->synopsis ?>">  
+     
+    <span class="tag_long">Primary Anatomical Site</span> <?php $this->buildGenericSelect('primary_anatomical_site', 'primary_anatomical_site', 'table_index', 'descriptor') ?>
+<!-- 
+    <span class="leftForm"></span><br>
+    <span class="rightForm"></span>
+ -->
+    <br> <br>
      <span class="tag">Overview:</span><textarea class="form_text" name="overview"><?php echo $this->overview; ?></textarea>
 <br><br>
      <input type="submit" id="undo_generic_update" name="undo_generic_update" value="undo" >
-  <a class="faux_button" id="order" href="/build_lab_inventory/forms/order.php?id=<?php echo $this->id ?>&table=products">Order Now</a>
    </form>
 
    </div>
@@ -96,7 +105,8 @@ $this->deleteInfo();
         } elseif(array_key_exists('new', $indata)) {
             $this->is_new = '1';
             $this->id = $this->largestProductID + 1;
-            //TODO: set up for newnes 
+            
+            $this->cancer_type = '';
             $this->synopsis = '';
             $this->product_name = '';
             $this->overview = '';
@@ -107,6 +117,7 @@ $this->deleteInfo();
             $this->id =  $indata['id'];
             $db_table = $this->fetchRecordInfo('id', $this->id);
             
+            $this->cancer_type = $db_table['synopsis'];
             $this->synopsis = $db_table['synopsis'];
             $this->product_name = $db_table['product_name'];
             $this->overview = $db_table['overview'];
@@ -122,5 +133,5 @@ $this->deleteInfo();
 
 
 
-$edit_product = new edit_product();
-$edit_product->execute();
+$form_cancer_type = new form_cancer_type();
+$form_cancer_type->execute();

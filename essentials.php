@@ -8,9 +8,8 @@ set_include_path($root . '/jquery/:'  .
                  $root . '/cancer_types/:' .
                  $root . '/cancer_types/css:' .
                  $root . '/cancer_types/base_classes:' .  
-                 $root . '/cancer_types/non_class_includes:'  . 
-                 $root . '/cancer_types/forms:' . 
-                 $root . '/cancer_types/tables'  );
+                 $root . '/cancer_types/models:'  . 
+                 $root . '/cancer_types/views_controllers'  );
 
 require_once "db_class.php";
 

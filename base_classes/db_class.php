@@ -19,7 +19,6 @@ class db_class
         global $DB_PASSWORD;
         global $DB_SERVER;
 
-
         try {
             $this->conn = @new mysqli($DB_SERVER, $DB_USER, $DB_PASSWORD , $DATABASE);
             if ($this->conn->connect_error) {
@@ -113,7 +112,7 @@ class db_class
   
   /////////////////////////////////
   // PRIMARY KEY 
-  function getPrimaryKey( $table){
+  function getPrimaryKey( $table ){
     global $DATABASE;
     $sql = "SELECT k.column_name
             FROM information_schema.table_constraints t
@@ -124,7 +123,19 @@ class db_class
               AND t.table_name='$table'";
               
     $db_table = $this->getTableNoParams($sql);
+//     return $sql;
     return $db_table[0]['column_name'];
+  }
+  
+  /////////////////////////////////
+  // GET A QUICK COUNT  
+  function tableCount( $table ){
+      $primary_key = $this->getPrimaryKey($table);
+//       return $primary_key;
+      $sql = "SELECT COUNT(" . $primary_key . ") FROM " . $table;
+      
+      $db_table = $this->getTableNoParams($sql);
+      return $db_table[0]["COUNT(" . $primary_key . ")"];
   }
   
   /////////////////////////////////
