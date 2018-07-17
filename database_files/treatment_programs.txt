@@ -1,0 +1,12 @@
+0	N/A
+1	Breast
+2	Brain/CNS
+3	Gastrointestinal
+4	Head and Neck
+5	Lung/Thoracic
+6	Genitourinary
+7	Gynocological
+8	Pediatric
+9	Prostate
+10	Melanomas and Sarcomas
+11	Other

@@ -1,0 +1,535 @@
+<?php
+// base_classes/form_class.php -  Mon Mar 5 11:31:40 CST 2018
+// This is a cleaned up version of form_class from cancer_types, etc.
+
+require_once "../essentials.php";
+require_once "db_class.php";
+
+class form_class {
+    protected $title;
+    protected $table_name;
+    protected $primary_key;
+    protected $primary_key_value;
+    protected $table_display;
+    
+    protected $is_new = 0;
+    protected $is_find_form = 0;
+//     protected $is_clone;  // get rid of this one?  -- yes!!
+    protected $problem_with_page = 0;
+    
+    protected  $editing_userid;  // to not be confused with the userid, which is a column in users 
+    protected  $editing_user_initials;
+    protected  $user_privileges;
+    
+ /*************************************************************************/   
+    function __construct( $table_name='', $primary_key = 'id', $table_display='table_class.php') {
+        $this->title = 'Empty';
+        $this->is_new = 0;
+        
+        $this->table_name = $table_name;
+        $this->table_display = $table_display;
+        $this->primary_key = $primary_key;
+    }
+
+ /*************************************************************************/  
+ // Execute the page.  
+    function execute() {
+        $this->editing_user_privileges = 0;
+        if( array_key_exists('uid', $_SERVER)){
+            $this->editing_userid = $_SERVER['uid'];
+        } else {
+            $this->editing_userid = 'cfschulte';  // this userid comes from check_login 
+        }
+
+        $this->editing_user_initials = $this->initials($this->editing_userid);  
+        $this->editing_user_privileges = $this->privileges($this->editing_userid);  
+        
+        if(!empty($_POST) ) {
+            $this->handle_post($_POST);
+        } elseif(!empty($_GET) ) {
+//     showArray($_GET);
+            $this->handle_get($_GET);
+        } else {
+            $this->create_new();
+        }
+?>
+<!DOCTYPE html>
+<html>
+         <?php $this->header(); ?>
+         <?php 
+             if(! $this->problem_with_page ) { 
+                $this->body(); 
+             } else  {
+                $this->warnUser();
+             }
+         ?>
+</html>
+<?php 
+    } /*** end execute **/
+
+    
+ /*************************************************************************/  
+ // The header  -- 
+ // 
+   function header() {
+?>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<?php 
+  // load the javascripts -- this is a little confusing and could be done more better.
+  $this->jscript_list();
+  $this->css_list();
+?> 
+    <Title><?php echo $this->title; ?></Title>
+</head>
+
+<?php 
+   }
+
+ /*************************************************************************/  
+ // The load the javascripts -- it can be called from the child classes 
+ // and then augmented.
+    function jscript_list() {
+?>
+    <script type="text/javascript" src="/cancer_types/js/jquery.js"></script>
+    <script type="text/javascript" src="/cancer_types/js/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/cancer_types/js/logout.js"></script>
+     
+    <script type="text/javascript" src="/cancer_types/js/date_handler.js"></script>
+    <script type="text/javascript" src="/cancer_types/js/delete.js"></script>
+    <script type="text/javascript" src="/cancer_types/js/header_action.js"></script>  
+    <script type="text/javascript" src="/cancer_types/js/forms.js"></script>  
+
+<?php 
+    }
+    
+ /*************************************************************************/  
+ // The load the javascripts -- it can be called from the child classes 
+ // and then augmented.
+    function css_list() {
+?>
+    <link rel="Stylesheet" type="text/css" href="/cancer_types/css/base.css" />
+    <link rel="Stylesheet" type="text/css" href="/cancer_types/css/tables.css" />
+    <link rel="Stylesheet" type="text/css" href="/cancer_types/css/forms.css" />
+    <link rel="Stylesheet" type="text/css" href="/cancer_types/js/jquery-ui/jquery-ui.min.css" />
+
+<?php 
+    }
+
+    
+ /*************************************************************************/  
+   // The body
+   function body() {
+?>
+<body>
+<?php
+    $this->page_header();
+?> 
+<div id="wrapper">
+  <div id="display">
+    <?php $this->makeForm(); ?>
+  </div>
+</div>
+</body>
+<?php 
+   }
+
+ /*************************************************************************/  
+   // Tell the user if the request couldn't be handled 
+   function warnUser() {
+?>   
+<body>
+<?php
+    $this->page_header();
+?> 
+<div id="wrapper">
+  <div id="display">
+    <h3>We're sorry, but there was a problem processing this request.</h3>
+  </div>
+</div>
+</body>
+
+<?php 
+   }
+
+ /*************************************************************************/  
+   // page_header
+   function page_header() {
+?>
+<div class="page_header">
+<div class="in_header">
+<a class="home_button" href="/cancer_types/" title="home"><svg width="2em" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.18 59.04"><defs><style>.cls-1{fill:#f1f2c0;}.cls-2,.cls-3{fill:none;stroke-miterlimit:10;}.cls-2{stroke:#f1f2c0;stroke-width:0.75px;}.cls-3{stroke:#000;stroke-width:3px;}</style></defs><title>Home</title><polygon class="cls-1" points="2.53 54.5 20.09 22.42 37.65 54.5 2.53 54.5"/><path d="M37.09,36.54,52.12,64H22.06l15-27.46m0-6.25L17,67H57.18L37.09,30.29Z" transform="translate(-17 -11)"/><rect class="cls-1" x="16.5" y="4.5" width="7" height="23"/><path d="M39,17V37H35V17h4m3-3H32V40H42V14Z" transform="translate(-17 -11)"/><ellipse class="cls-1" cx="20" cy="3.5" rx="6" ry="1.5"/><path d="M37,13c-3.31,0-6,.67-6,1.5S33.69,16,37,16s6-.67,6-1.5S40.31,13,37,13Z" transform="translate(-17 -11)"/><ellipse class="cls-1" cx="20" cy="2" rx="3.74" ry="0.5"/><path d="M37,11c-3.31,0-6,.9-6,2s2.69,2,6,2,6-.9,6-2-2.69-2-6-2Z" transform="translate(-17 -11)"/><path class="cls-1" d="M37,68.5c-8.74,0-14.51-.79-17.16-1.5,2.65-.71,8.42-1.5,17.16-1.5s14.51.79,17.16,1.5C51.51,67.71,45.74,68.5,37,68.5Z" transform="translate(-17 -11)"/><path d="M37,64c-11,0-20,1.34-20,3s9,3,20,3,20-1.34,20-3-9-3-20-3Z" transform="translate(-17 -11)"/><rect class="cls-1" x="14" y="2" width="12" height="1.5"/><polygon points="26 2 14 2 14 3.5 26 3.5 26 2 26 2"/><path class="cls-1" d="M38.79,41.81c.08-1.26.2-2.54.22-3.8a2.62,2.62,0,0,0-1.14-2.44c-1.58-1.11-3.09,1.49-1.51,2.59-.85-.59-.15-.51-.35-.15a4.49,4.49,0,0,0-.07,1.33l-.15,2.47c-.11,1.93,2.89,1.93,3,0Z" transform="translate(-17 -11)"/><path class="cls-1" d="M37.06,35.31a2.49,2.49,0,0,0-1.16.35A1.52,1.52,0,0,0,35.16,37c.05.83,0,1.63,0,2.45a1.79,1.79,0,0,0,.53,1.34,1.89,1.89,0,0,0,.77.43l.39,0c.26,0,.17,0-.26-.11a1.52,1.52,0,0,0,2.2-.9,3.21,3.21,0,0,0-.76-3,1.5,1.5,0,0,0-2.12,0,1.53,1.53,0,0,0,0,2.12c-.09-.11,0,0,0,0l2.2-.89a3,3,0,0,0-.59-.22l-.4-.06c-.19,0-.18,0,0,0l.66.38-.07-.08.44,1.06c-.08-.87.05-1.77,0-2.65l-.74,1.3-.36.06a1.55,1.55,0,0,0,1.5-1.5,1.5,1.5,0,0,0-1.5-1.5Z" transform="translate(-17 -11)"/><path class="cls-1" d="M38.1,36.73l0-.15a1.5,1.5,0,0,0-2.95.4v.36a1.5,1.5,0,0,0,3,0V37l-3,.4,0,.14a1.51,1.51,0,0,0,1.84,1,1.53,1.53,0,0,0,1.05-1.84Z" transform="translate(-17 -11)"/><path class="cls-1" d="M36.62,38.84a1.5,1.5,0,0,0,0-3,1.5,1.5,0,0,0,0,3Z" transform="translate(-17 -11)"/><path class="cls-1" d="M38.12,37.38v-.22a1.5,1.5,0,0,0-2.94-.39l0,.25H38l0,.1h-3a3,3,0,0,0,.53,2.17l-.38-.66c0-.27,0-.27,0,0V39l0,.8a1.5,1.5,0,0,0,3,0c0-1,.19-1.92-.51-2.76l.39.67c0,.23,0-.09,0-.18v-.45a1.5,1.5,0,0,0-3,0,1.86,1.86,0,0,0,.07.7c.34,1.38,2.61,1.48,2.89,0l0-.26-3-.4v.22a1.53,1.53,0,0,0,1.5,1.5,1.51,1.51,0,0,0,1.5-1.5Z" transform="translate(-17 -11)"/><line class="cls-2" x1="18.4" y1="25.98" x2="18.4" y2="29.95"/><line class="cls-2" x1="21.53" y1="25.81" x2="21.53" y2="29.78"/><line class="cls-2" x1="20.53" y1="25.81" x2="20.53" y2="29.78"/><line class="cls-2" x1="21.64" y1="25.81" x2="21.64" y2="29.78"/><ellipse class="cls-2" cx="20.1" cy="53.08" rx="14.68" ry="0.69"/><ellipse class="cls-1" cx="20.2" cy="53.14" rx="12.37" ry="0.13"/><path class="cls-1" d="M37.2,64c-6.83,0-12.37.06-12.37.13s5.54.13,12.37.13,12.36,0,12.36-.13S44,64,37.2,64Z" transform="translate(-17 -11)"/><ellipse class="cls-1" cx="20.2" cy="53.14" rx="12.37" ry="0.13"/><path class="cls-1" d="M37.2,64c-6.83,0-12.37.06-12.37.13s5.54.13,12.37.13,12.36,0,12.36-.13S44,64,37.2,64Z" transform="translate(-17 -11)"/><ellipse class="cls-1" cx="20.2" cy="53.05" rx="12.37" ry="0.13"/><path class="cls-1" d="M37.2,63.92c-6.83,0-12.37.06-12.37.13s5.54.13,12.37.13,12.36-.06,12.36-.13S44,63.92,37.2,63.92Z" transform="translate(-17 -11)"/><ellipse class="cls-1" cx="20.21" cy="53.32" rx="12.37" ry="0.13"/><path class="cls-1" d="M37.21,64.19c-6.83,0-12.37,0-12.37.13s5.54.13,12.37.13,12.37-.06,12.37-.13-5.54-.13-12.37-.13Z" transform="translate(-17 -11)"/><ellipse class="cls-1" cx="20.21" cy="53.08" rx="12.37" ry="0.13"/><path class="cls-1" d="M37.21,64c-6.83,0-12.37.06-12.37.13s5.54.13,12.37.13,12.37-.06,12.37-.13S44,64,37.21,64Z" transform="translate(-17 -11)"/><path class="cls-1" d="M37.09,68.33c-9,0-14.8-.85-17.37-1.58,2.57-.74,8.41-1.59,17.37-1.59s14.79.85,17.36,1.59C51.88,67.48,46,68.33,37.09,68.33Z" transform="translate(-17 -11)"/><path d="M37.09,66.66c1.66,0,3.21,0,4.66.09-1.45,0-3,.08-4.66.08s-3.22,0-4.67-.08c1.45-.06,3-.09,4.67-.09m0-3C26,63.66,17,65,17,66.75s9,3.08,20.08,3.08,20.07-1.38,20.07-3.08-9-3.09-20.07-3.09Z" transform="translate(-17 -11)"/><path class="cls-1" d="M37.09,68.54c-9,0-14.8-.85-17.37-1.58,2.57-.74,8.41-1.59,17.37-1.59s14.79.85,17.36,1.59C51.88,67.69,46,68.54,37.09,68.54Z" transform="translate(-17 -11)"/><path d="M37.09,66.87c1.66,0,3.21,0,4.66.09-1.45.05-3,.08-4.66.08s-3.22,0-4.67-.08c1.45-.06,3-.09,4.67-.09m0-3C26,63.87,17,65.25,17,67S26,70,37.09,70,57.16,68.66,57.16,67s-9-3.09-20.07-3.09Z" transform="translate(-17 -11)"/><line class="cls-3" x1="15.58" y1="55.88" x2="24.33" y2="55.96"/></svg></a>
+ <h1><?php echo $this->title; ?></h1>
+
+<!-- 
+ <a class="head_action a_button" id="logout_button" href="#">Log Out</a>
+ -->
+<?php 
+    $this->additionalHeaderStuff();
+?>
+ </div>
+ <div style="clear:both;"></div>
+<?php 
+//  <div style="clear:both;"></div> used to be in menu.php, but this is more flexible
+     include "../menu.php";
+   }
+
+ /*************************************************************************/  
+   // additionalHeaderStuff - form specific buttons 
+   function additionalHeaderStuff() {
+        return;
+   }
+
+
+ /*************************************************************************/  
+   // Do the basic form things.  -- most likely to be overridden 
+   function makeForm() {
+        if($this->table_name != '' ) {
+            $db_obj = new db_class();
+            $desc_table = $db_obj->tableDescription($this->table_name);
+            $db_obj->closeDB();
+        
+//             showArray($desc_table);
+            echo '<form id="generic_edit_form" method="POST" >';
+            echo '<input type="hidden" name="title_input"  value="name"> '; // THIS MUST BE HERE FOR CLONABLE FORMS!!!
+            echo '<input type="hidden" name="table"  value="vendors">';     // THE TABLE MUST BE LABELED
+            echo '<b>This is a generic input</b> <input type="text" name="generic">' . "\n";
+        
+            echo '<br><br><input type="submit" >';
+            echo '</form>';
+        } else {
+            echo '<h2>hello, form<h2>';
+        }
+   }
+
+      
+/*************************************************************************/ 
+  // A place for consistent, hidden information for the delete buttons 
+       function deleteInfo() {
+?>
+    <form method="post"  id="delete_form">
+    <!-- for deletes to work, this must be here and the values must be in this order -->
+     <input type="hidden" id="primary_key"  name="primary_key" value="<?php echo $this->primary_key ?>">
+     <input type="hidden" id="primary_key_value" name="primary_key_value" value="<?php echo $this->primary_key_value ?>">
+     <input type="hidden" id="delete_from_table" name="delete_from_table" value="<?php echo $this->table_name ?>">
+     <input type="hidden" id="return_address" name="return_address" value="/cancer_types/tables/<?php echo $this->table_display ?>">
+    </form>
+<?php
+       }
+
+
+    
+ /*************************************************************************/  
+   // set initial variables with 
+   function handle_get($indata) {
+//        showDebug('form_class GET:');
+//        showArray($indata);
+        if(array_key_exists('new', $indata)) {
+            $this->is_new = 1;
+            $this->title = 'New data';
+        } 
+        if(array_key_exists('find', $indata)){
+            $this->is_find_form = 1;
+            $this->title = 'Find in ' . $this->table_name;
+        }
+   }
+    
+    
+ /*************************************************************************/  
+   // set initial variables with 
+   function handle_post($indata) {
+//        showDebug('form_class POST:');
+//        showArray($indata); 
+       return;
+   }
+ 
+ /*************************************************************************/  
+   // set initial variables with ???????/
+   function create_new() {
+        if($this->table_name != '' ) {
+            $this->title = 'New ' . $this->table_name .
+            $this->makeForm();
+        }
+   }
+ 
+ /*************************************************************************/  
+   // Clone the original record in the Database. 
+   // This assumes the datatypes match correctly.
+   function clone_record($db_table) {
+        $db_obj = new db_class();
+        $typeHash = $db_obj->columnTypeHash($this->table_name);
+        
+        $sql = 'INSERT INTO ' . $this->table_name ;
+        $typeList = '';
+        $columns = ' (' ;
+        $values = '(' ;
+        $paramList = array();
+        $count = 0;
+        
+        foreach($db_table as $key => $value) {
+            if($count > 0){ 
+                $columns .= ',' ; 
+                $values .= ',';
+            }
+            $columns .= $key;
+            $values .= '?';
+            $paramList[] = $value;
+            $typeList .= $typeHash[$key];
+            
+            $count++;
+        }
+        
+        $columns .= ')';
+        $values .= ')';
+        $sql .= $columns . ' VALUES ' . $values;
+        
+        showArray(array($sql, $typeList, $paramList));
+        
+        $db_obj->closeDB();
+        
+   }
+
+
+ /*************************************************************************/  
+    /////////////
+    // get the largest primary ID - lots of these are auto-increment, so this is mostly for display.
+    function getLargestPrimaryID() {
+
+        $url = "SELECT MAX(" . $this->primary_key . ") AS id FROM " . $this->table_name;
+
+        $db_obj = new db_class();
+        $db_table = $db_obj->getTableNoParams($url);
+        $db_obj->closeDB();
+   
+       return $db_table[0][id];
+    }
+ 
+  
+ /*************************************************************************/  
+   // set initial variables with 
+   function fetchRecordInfo($key, $identifier) {
+//         showDebug($identifier);
+        
+        $sql = 'SELECT * FROM ' . $this->table_name . ' WHERE ' . $this->primary_key . '=?';
+        
+        $db_obj = new db_class();
+        $keyTypeHash = $db_obj->columnTypeHash($this->table_name);
+        $keyType = $keyTypeHash[$this->primary_key];
+        $db_table = $db_obj->simpleOneParamRequest($sql, $keyType, $identifier);
+        $db_obj->closeDB();
+//         showArray(array($sql, $keyType, $identifier));
+//         showArray($db_table);
+        
+        return $db_table[0];
+   }
+
+    ///////
+    //  echo a select input directly to the output 
+    function buildGenericSelect($tablename, $form_name, $id_name, $label_name, $current_choice=0, $disabled=0) {
+        $pulldownList = $this->getPulldownList($tablename, $id_name, $label_name);
+
+        echo '<select id="' . $form_name . '" name="' . $form_name . '" >';
+        if($disabled) {
+           echo ' disabled '; 
+        }
+        echo '>' . "\n";
+    
+        foreach($pulldownList as $choice) {
+            echo '<option value="' . $choice[$id_name] . '" ';  
+            $this->setSelection($choice[$id_name], $current_choice);
+            echo '>' . $choice[$label_name] . '</option>' . "\n";
+        }
+        echo "</select>\n";
+    }
+
+
+    // //////////////////////
+    function getPulldownList($tablename, $id_name, $label_name) {
+         $sql = "SELECT $id_name, $label_name FROM  $tablename";
+        
+        $db_obj = new db_class();
+        $db_table = $db_obj->getTableNoParams($sql);
+        $db_obj->closeDB();
+        return     $db_table;
+    }
+
+    // //////////////////////
+    // Used to set the correct option in a select input.
+    //  Does nothing if the option is not selected 
+    function setSelection($option, $status) {
+        echo ($option == $status)? 'selected': '';
+    }
+
+    // //////////////////////
+    // Used to set the correct option in a select input.
+    //  Does nothing if the option is not selected 
+    function setSelectionBuffer($option, $status) {
+        return ($option == $status)? 'selected': '';
+    }
+    
+    
+ /*************************************************************************  
+ UNDERSTAND WHAT IS GOING ON BEYOND THIS. INITIALS SHOULD BE SET ALREADY
+ AND TAKEN FROM THE USERNAME
+ *************************************************************************/ 
+ 
+ /*************************************************************************/  
+   // Right now, this is only used for ordering. I'm putting it here
+   // because there might be a time in the future when they will want
+   // more things initialed 
+    function initials($userid) {
+        return $this->userFieldFromID('initials', $userid);
+    }
+ 
+ /*************************************************************************/  
+   // 
+    function privileges($userid) {
+        return  $this->userFieldFromID('privileges', $userid);
+    }
+
+ /*************************************************************************/  
+   // 
+    function userFieldFromID($field, $userid) {
+        $sql = "SELECT $field FROM users WHERE userid=?";
+
+        $db_obj = new db_class();
+        $typeHash = $db_obj->columnTypeHash('users');
+        $typeStr = $typeHash[$field];
+//         showDebug($field . ' type ' . $typeStr);
+//         showArray(array($sql, $typeStr, $userid));
+        $db_table = $db_obj->simpleOneParamRequest($sql, $typeStr, $userid);
+        $db_obj->closeDB();
+        return $db_table[0][$field];
+    }
+  
+ /*************************************************************************/  
+   // The value of 'name might be the user's initials or it might be a 
+   // full name. There are quite a few possibillities, so we'll focus on 
+   // the major ones.
+    function initialsFromName($name) {
+//         showDebug($name) ;
+        $initials = 'dl';
+        // figure out whether we have a full name or initials
+        $name_length = strlen($name);
+//         showDebug($name_length) ;
+        if($name_length < 4) { // the name might be the initials 
+            $initials = $this->verifyAndSet($name);
+        } else {
+        // get the first and last. ignore the any middle - though De Mars might be a problem...
+            $nameArray = preg_split("/\s+/", $name);
+            $firstName = array_shift($nameArray);
+            $lastName = array_pop($nameArray);
+            $sql = 'SELECT initials FROM users WHERE firstname=? AND lastname=?';
+            $typeStr = 'ss';
+
+            $db_obj = new db_class();
+            $db_table = $db_obj->safeSelect($sql, $typeStr, array($firstName, $lastName));
+            $db_obj->closeDB();
+            $initials = $db_table[0]['initials'];
+//             showArray($db_table);
+        }
+        return $initials;
+    }
+
+ /*************************************************************************/  
+   // If the user entered their initials in the name field, this will ensure 
+   // that they are consistent with the database. It will also set the 'ordered_by'
+   // if it is not already. Some of this needs to be done because we are importing
+   // from the old access database.
+    function verifyAndSet($initials) {
+        // get the current initial list.
+        $sql = 'SELECT initials FROM users';
+        $db_obj = new db_class();
+        $db_table = $db_obj->getTableNoParams($sql);
+        $db_obj->closeDB();
+//         showArray($db_table);
+        // check to see if this is on the list..
+//         showDebug('here1');
+        foreach($db_table as $obj) {
+            if(strcasecmp($obj['initials'], $initials) == 0 ) { // we don't expect multibyte unicode. 
+                return $obj['initials']; // with the correct case 
+            }
+        }
+//         showDebug('here');
+        // if it is not exactly on the list, try comparing the first and last letters; TOTDO: test this with cfs
+        if(strlen($initials) == 3) {
+            $firstInit = substr($initials,0,1);
+            $lastInit = substr($initials,2,1);
+            $initials = $firstInit . $lastInit;
+        }
+        // do the same thing for each db initials:
+         foreach($db_table as $obj) {
+            $temp_initial = $obj['initials'];
+            if(strlen($temp_initial) == 3) {
+                $firstInit = substr($temp_initial,0,1);
+                $lastInit = substr($temp_initial,2,1);
+                $temp_initial = $firstInit . $lastInit;
+            }
+            if(strcasecmp($temp_initial, $initials) == 0 ) { // we don't expect multibyte unicode. 
+                return $obj['initials']; // with the correct case 
+            }
+         }
+    }
+
+ /*************************************************************************/ 
+ // INVENTORY LOCATIONS 
+ // As of May, 2018, only cell_inventory and antibody_inventory use this storage
+ // widget. I could see a point where this is used by a few databases. 
+ // Time to make it more universal  TODO
+ /*************************************************************************/  
+    // 
+//     function handle_storage() {  
+//        // since the inventory numbers used by the location grid are not 
+//        // in the same format as the numbers used here, we need to fix them
+//        // a bit (strip the leading zeros).
+//         $trimmed_inv_num = sprintf($this->id);
+//         $sql = 'SELECT * FROM inventory_storage WHERE id=? AND db_table=?';
+//         $db_obj = new db_class();
+//         $db_table = $db_obj->safeSelect($sql, 'ss', array($trimmed_inv_num, $this->table_name));
+//         $db_obj->closeDB();
+// //         showArray($db_table);
+//         
+//         if( ! empty($db_table) ) {
+//             $box_info = $this->collateStorageInfo($db_table) ;
+//             echo '<h3>Storage Locations</h3>';
+//             //showArray($box_info);
+//             // loop through the boxes and update the information
+//             foreach($box_info as $box) {
+//                 // link to the box listed 
+//                 echo '<b><a href="' . $box['url'] . '">Box ' .  $box['stack_num'] . ' ' .  $box['stack_letter'] . '</a></b> -- Cells: ';
+//                 foreach( $box['grid_list'] as $location) {
+//                     echo $location . ' ';
+//                 }
+//                 echo '<br><br>';
+//             }
+//             
+//         } else {
+//             echo 'none listed'; 
+//         }
+//     }
+//     
+//  /*************************************************************************/  
+//       // TODO: explain this more clearly 
+//       // create a structure to label each box and storage cell 
+//       // for the storage ids. Both storage box and inventory_storage are going to 
+//       //  need alteration.
+//     function collateStorageInfo( $db_table ) {
+//         $returnArray = array();
+//         
+//         foreach($db_table as $position) {
+//             if(!array_key_exists($position['box_id'], $returnArray)) {
+//                  $returnArray[$position['box_id']] = array(); // create a new information structure 
+//                  $returnArray[$position['box_id']]['url']  = '/cancer_types/tables/LN_storage.php?box_id=' . $position['box_id'];
+//                  $returnArray[$position['box_id']]['stack_num'] = $position['stack_num'];
+//                  $returnArray[$position['box_id']]['stack_letter'] = $position['stack_letter'];
+//                  $returnArray[$position['box_id']]['grid_list'] = array($position['grid_cell_number']);
+//             } else {
+//                   $returnArray[$position['box_id']]['grid_list'][] = $position['grid_cell_number'];
+//             }
+//         }
+//         
+//         return $returnArray;
+//     }
+   
+}

@@ -1,0 +1,11 @@
+0	n/a
+1	H&N
+2	Brain
+3	Thorax
+4	Breast
+5	Abdomen
+6	GYN
+7	GU
+8	Skin
+9	Extremities
+10	Other (Please specifiy)
