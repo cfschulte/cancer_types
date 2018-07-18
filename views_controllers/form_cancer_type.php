@@ -28,7 +28,7 @@ class form_cancer_type extends form_class {
         $this->is_clone = FALSE;
     }
 
-// be prepared to add <script type="text/javascript" src="/build_lab_inventory/js/reorder.js"></script>, or something like it.
+// be prepared to add <script type="text/javascript" src="/cancer_types/js/reorder.js"></script>, or something like it.
 
 
 
@@ -40,7 +40,7 @@ class form_cancer_type extends form_class {
     <a class="faux_button" id="done_goback_button" href="#">Go Back</a>
 <?php  if(! $this->is_find_form AND ! $this->is_new): ?>
      <button class="semi_faux" id="clone_this" href="#" <?php if( $this->is_new == 1 ){ echo 'disabled';}  ?> >Clone</button>
-        <a class="faux_button" href="/build_lab_inventory/forms/form_cancer_type.php?new=yes">New Cancer Type</a>
+        <a class="faux_button" href="/cancer_types/forms/form_cancer_type.php?new=yes">New Cancer Type</a>
      <span class="right"><a class="faux_button" id="delete" href="#">Delete</a></span>
 <?php  elseif($this->is_find_form) : ?>
         <span style="float:right">
@@ -71,7 +71,7 @@ class form_cancer_type extends form_class {
      <input type="hidden" name="is_new" value="<?php echo $this->is_new ?>">
      <input type="hidden" name="table" value="cancer_type_list">
      <input type="hidden" name="table_display" value="<?php echo $this->table_display ?>">
-     <input type="hidden" name="title_input"  value="cancertype"> 
+     <input type="hidden" name="title_input"  value="cancer_type"> 
      
      
      <span class="tag">Cancer Type:</span>   <input  class="info" type="text" name="cancer_type" size="95" value="<?php echo $this->cancer_type ?>">  <br>
@@ -96,6 +96,7 @@ $this->deleteInfo();
  /*************************************************************************/  
    // set initial variables with 
    function handle_get($indata) {
+        
         $this->is_new = 0;  // necessary for an insert
         $this->is_find_form = 0;  
         
@@ -116,18 +117,19 @@ $this->deleteInfo();
         } else {
             $this->id =  $indata['id'];
             $db_table = $this->fetchRecordInfo('id', $this->id);
-            
-            $this->cancer_type = $db_table['synopsis'];
+           
+            $this->cancer_type = $db_table['cancer_type'];
             $this->synopsis = $db_table['synopsis'];
             $this->product_name = $db_table['product_name'];
             $this->overview = $db_table['overview'];
             $this->primary_anatomical_site = $db_table['primary_anatomical_site'];
             $this->other_anatom_type_text = $db_table['other_anatom_type_text'];
             $this->primary_trt_program = $db_table['primary_trt_program'];
+            
+            $this->title = $this->cancer_type;
         }
         $this->primary_key_value = $this->id;
     }
-    
 
 } // end of class definition 
 

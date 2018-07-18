@@ -3,6 +3,58 @@
 -- A basic MySQL app that has information about Cancer Types
 -- 
 
+--
+-- Table structure for table `backup_deleted_entries`  -- for whole records 
+--
+
+DROP TABLE IF EXISTS `backup_deleted_entries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `backup_deleted_entries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_name` varchar(64) NOT NULL,
+  `table_prim_key` varchar(16) DEFAULT NULL,
+  `prim_key_val` int(11) DEFAULT NULL,
+  `entry_data` text,
+  `time_saved` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `backup_deleted_entries`
+--
+
+LOCK TABLES `backup_deleted_entries` WRITE;
+/*!40000 ALTER TABLE `backup_deleted_entries` DISABLE KEYS */;
+/*!40000 ALTER TABLE `backup_deleted_entries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `backup_table`  -- for individual fields 
+--
+
+DROP TABLE IF EXISTS `backup_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `backup_table` (
+  `backup_id` int(11) NOT NULL AUTO_INCREMENT,
+  `db_table` varchar(64) NOT NULL,
+  `id` int(11) DEFAULT NULL,
+  `form_type` varchar(32) DEFAULT NULL,
+  `table_column` varchar(64) DEFAULT NULL,
+  `value_varchar` varchar(256) DEFAULT NULL,
+  `value_text` text,
+  `value_int` int(11) DEFAULT NULL,
+  `value_float` float DEFAULT NULL,
+  `value_money` decimal(15,2) DEFAULT NULL,
+  `value_date` date DEFAULT NULL,
+  `time_saved` bigint(20) NOT NULL,
+  PRIMARY KEY (`backup_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
 
 -- 
 -- Define cancer type list 

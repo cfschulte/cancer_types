@@ -250,14 +250,14 @@ table.spec_sheets_list  a:hover {
 
 /*  For the tablesorter */
 table.tablesorter thead tr .headerSortUp {
-	background-image: url(/build_lab_inventory/js/themes/blue/asc.gif);
+	background-image: url(/cancer_types/js/themes/blue/asc.gif);
 }
 table.tablesorter thead tr .headerSortDown {
-	background-image: url(/build_lab_inventory/js/themes/blue/desc.gif);
+	background-image: url(/cancer_types/js/themes/blue/desc.gif);
 }
 
 th.header { 
-    background-image: url(/build_lab_inventory/js/themes/blue/bg.gif); 
+    background-image: url(/cancer_types/js/themes/blue/bg.gif); 
     cursor: pointer; 
     font-weight: bold; 
     background-repeat: no-repeat; 

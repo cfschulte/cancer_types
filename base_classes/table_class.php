@@ -164,7 +164,7 @@ class table_class {
 ?>
 <div class="page_header">
 <div class="in_header">
-<a class="home_button" href="/cancer_types/" title="home">home</a>
+<a class="home_button" href="/cancer_types/" title="home"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 68"><title>home_icon</title><rect x="6.5" y="24.5" width="53" height="43"/><path d="M62,26V68H10V26H62m1-1H9V69H63V25Z" transform="translate(-3 -1)"/><polygon points="1.35 27.5 32.5 0.66 63.65 27.5 1.35 27.5"/><path d="M35.5,2.32,65.31,28H5.69L35.5,2.32M35.5,1,3,29H68L35.5,1Z" transform="translate(-3 -1)"/></svg></a>
  <h1 ><?php echo $this->title; ?></h1>
 <!-- 
  <a class="head_action a_button" id="logout_button" href="#">Log Out</a>
@@ -278,7 +278,7 @@ class table_class {
    // identifier, but does not want to be strict about its format.
     function table_cell_primary($key, $datum, $id='') {
 //        echo '<td class="link_button order"><a title="order" href="/cancer_types/forms/' . $this->edit_page .'?id=' . $datum . '&table=' .$this->table_name . '" target="_blank">' . $datum . '</a></td>';
-       echo '<td class="link_button order"><a title="order" href="/cancer_types/forms/' . $this->edit_page .'?id=' . $datum . '&table=' .$this->table_name . '">' . $datum . '</a></td>';
+       echo '<td class="link_button order"><a title="order" href="/cancer_types/views_controllers/' . $this->edit_page .'?id=' . $datum . '&table=' .$this->table_name . '">' . $datum . '</a></td>';
             
     }
    

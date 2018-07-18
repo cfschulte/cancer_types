@@ -3,7 +3,7 @@
 forms.js - January 19, 2017
 General jquery that most forms should have - I would like to 
 replace reorder.js with this and a form-specific js file.
-This is from build_lab_inventory. Needs lots of changing.
+This is from cancer_types. Needs lots of changing.
 
 *************/
 
@@ -21,7 +21,7 @@ $(document).ready(function() {
 // INIT AJAX  with all the stuff that every ajax call has 
 $(document).ready(function(){
     $.ajaxSetup({
-        url:'/build_lab_inventory/ajax_parser.php',
+        url:'/cancer_types/ajax_parser.php',
         method: 'POST',
         dataType: 'json',
         error: function(xhr, status, errorThrown) {

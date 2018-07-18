@@ -1,6 +1,6 @@
 ///////////////////////////////////////
 // delete.js Mon Mar  5 11:56:46 CST 2018
-//  - a rewrite from build_lab_inventory and build_lab_inventory 
+//  - a rewrite from cancer_types and cancer_types 
 // Do we even want to use this?  - This is the generic delete/undelete 
 // interface for entire rows in tables.
 
@@ -8,7 +8,7 @@
 //      <input type="hidden" id="primary_key"  name="primary_key" value="id">
 //      <input type="hidden" id="primary_key_value" name="primary_key_value" value="<?php echo $this->id ?>">
 //      <input type="hidden" id="delete_from_table" name="delete_from_table" value="biochemical_index">
-//      <input type="hidden" id="return_address" name="return_address" value="/build_lab_inventory/tables/biochem_index_table.php">
+//      <input type="hidden" id="return_address" name="return_address" value="/cancer_types/tables/biochem_index_table.php">
 
 
 ////////////////////////////////   
@@ -34,7 +34,7 @@ $(document).ready(function(){
             
             console.log({'db_data': db_data, 'return_address': return_address});
             $.ajax({
-//                 url: "/build_lab_inventory/ajax_parser.php",
+//                 url: "/cancer_types/ajax_parser.php",
                 data: {
                     id: 'delete_entry',
                     data: db_data
@@ -68,7 +68,7 @@ $(document).ready(function(){
         var table_name = $("#table_name").val();
         
         $.ajax({
-            url: "/build_lab_inventory/ajax_parser.php",
+            url: "/cancer_types/ajax_parser.php",
             data: {
                 id:  'undo_entry_delete',
                 data: table_name
@@ -105,7 +105,7 @@ $(document).ready(function(){
 $(document).ready(function(){
     var table_name = $("#table_name").val();
     $.ajax({
-        url: "/build_lab_inventory/ajax_parser.php",
+        url: "/cancer_types/ajax_parser.php",
         data: {
             id:  'activate_undo_entry_delete',
             data: table_name
@@ -147,7 +147,7 @@ $(document).ready(function(){
 // //             console.log(formData);
 //                         
 //                 $.ajax({
-//                     url: "/build_lab_inventory/non_class_includes/delete.php",
+//                     url: "/cancer_types/non_class_includes/delete.php",
 //                     data: {
 //                         id: 'vendors',  // do we really need the id?
 //                         data: formData
