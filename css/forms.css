@@ -190,8 +190,9 @@ span.remark {
 }
 
 .form_text {
+  text-align: top;
    width: 52em;
-   height: 4em;
+   height: 8em;
 }
 
 

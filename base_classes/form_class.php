@@ -178,6 +178,7 @@ class form_class {
  /*************************************************************************/  
    // additionalHeaderStuff - form specific buttons 
    function additionalHeaderStuff() {
+        
         return;
    }
 

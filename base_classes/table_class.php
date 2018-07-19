@@ -152,6 +152,7 @@ class table_class {
   <div id="display">
     <?php $this->create_table(); ?>
   </div>
+
 </div>
 
 <?php 
@@ -175,8 +176,9 @@ class table_class {
 ?>
 
  </div>
-</div>
  <div style="clear:both;"></div>
+ <?php  include "../menu.php";   ?>
+</div>
 <?php 
 //      include "../menu.php";
    }

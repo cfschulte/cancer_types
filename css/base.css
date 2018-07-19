@@ -16,6 +16,9 @@ body {
     height:100%;
 }
 
+
+
+
 h1 {
     padding-left:1em;
 }
@@ -234,6 +237,17 @@ span.delete_button:hover {
     color: #e00;
     cursor: pointer;
 }
+
+/* format the to front pointers */
+a.front_page_link:link, a.front_page_link:visited, a.front_page_link:active{
+    color: #CC5F00;
+    text-decoration:none; 
+}
+
+a.front_page_link:hover {
+    color: #0088CC;
+    text-decoration:none; 
+}  
 
 /* 
 .delete_app_button, .delete_lot_info_button {

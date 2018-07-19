@@ -33,22 +33,22 @@
   
  <link rel="Stylesheet" type="text/css" href="/cancer_types/css/base.css" />
 
- <Title>Lab Inventory</Title>
+ <Title>Cancer Types</Title>
 
 
 </head>
 <body>
  
 <div id="wrapper"> 
-    
-    <h2><a href="https://www.cancer.gov/about-cancer/understanding/what-is-cancer">What is Cancer?</a></h2>
-    
-    <h3><a href="/cancer_types/views_controllers/table_cancer_type.php">Cancer Types</a></h3>
-<br>
-<br>
-<br>
-<br>
-<br>
+    <div style="text-align:center">
+       <h2><a class="front_page_link" href="https://www.cancer.gov/about-cancer/understanding/what-is-cancer">What is Cancer?</a></h2>
+       <h3><a class="front_page_link" href="/cancer_types/views_controllers/table_cancer_type.php">Cancer Types</a></h3>
+    </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   <div id="footer">
     <p>Department of Human Oncology, UW Medical School, 600 Highland Ave., Madison, WI 53792</p>
     <p><a href="http://www.med.wisc.edu/">University of Wisconsin School of Medicine and Public Health</a></p>
