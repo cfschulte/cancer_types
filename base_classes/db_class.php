@@ -414,10 +414,12 @@ class db_class
         return $this->conn->real_escape_string($value);
     }
     
-    // Gets the last row of a table (the most recently created in dho_users);
+  /////////////////////////////////
+  // Gets the last row of a table (the most recently created in dho_users);
     function getLastRow($table) {
         try {
-            $sql = "SELECT * FROM $table ORDER BY id DESC LIMIT 1";
+            $primary_key = $this->getPrimaryKey($table);
+            $sql = "SELECT * FROM $table ORDER BY $primary_key DESC LIMIT 1";
             $stmt = $this->conn->prepare($sql);
             if (! $stmt) {
                 throw new Exception();
