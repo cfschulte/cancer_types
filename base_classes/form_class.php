@@ -331,15 +331,35 @@ class form_class {
    }
 
     ///////
-    //  echo a select input directly to the output 
+    //  Build a set of radio-buttons
+    // NOTE: Maybe I should change the order of these....
+    function buildGenericRadioGroup($tablename, $form_name, $id_name, $label_name, $current_choice=0, $disabled=0) {
+        $choices = $this->getChoiceList($tablename, $id_name, $label_name);
+
+        foreach($choices as $choice) {
+            echo  $choice[$label_name] ;
+            echo ': <input   type="radio" name="' . $form_name . '" value="'  . $choice[$id_name] . '"' ;
+            // is this checked?
+            if($choice[$id_name] == $current_choice) {
+                echo ' checked ';
+            }
+            echo '> ';
+        }
+    }
+
+
+   ///////
+   //  Build a SELECT pulldown -- echo a select input directly to the output 
+   // NOTE: I should change the order of these....
     function buildGenericSelect($tablename, $form_name, $id_name, $label_name, $current_choice=0, $disabled=0) {
         $pulldownList = $this->getPulldownList($tablename, $id_name, $label_name);
 
-        echo '<select id="' . $form_name . '" name="' . $form_name . '" >';
+        echo '<select id="' . $form_name . '" name="' . $form_name ;
         if($disabled) {
            echo ' disabled '; 
         }
         echo '>' . "\n";
+        echo "<option></option>\n"; // Start out with a blank option.
     
         foreach($pulldownList as $choice) {
             echo '<option value="' . $choice[$id_name] . '" ';  
