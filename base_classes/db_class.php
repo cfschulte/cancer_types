@@ -2,7 +2,10 @@
 // db_class.php -  Thu Mar 1 09:49:47 CST 2018
 //   This is a rewrite/cleanup of the db_class I have been using.
 
-// require_once "../essentials.php";  //-- this conflicts when called from index.php  - figure it out.
+// Since the calling files already have essentials required, requiring
+// it again conflicts. It seems odd since require_once is supposed to 
+// only 
+// require_once "../essentials.php";  
 
 require_once "db_config.php";
   
@@ -123,7 +126,6 @@ class db_class
               AND t.table_name='$table'";
               
     $db_table = $this->getTableNoParams($sql);
-//     return $sql;
     return $db_table[0]['column_name'];
   }
   
@@ -148,6 +150,14 @@ class db_class
             $mysqli_result = $stmt->get_result();
             return $mysqli_result;
     }
+    
+/////////////////////////////////
+// I guess this is still an interesting wrapper. It assumes the table has 
+// a primary key called, 'id'
+	function getRowByID($id, $table) {
+	    $sql = "SELECT * FROM $table WHERE id=?";
+	    return $this->simpleOneParamRequest($sql, 'i', $id);
+	}
   
   /////////////////////////////////
   // Returns an array of rows, represented as associative arrays with 
@@ -189,6 +199,32 @@ class db_class
             return null;        
         }
     }
+
+
+/////////////////////////////////
+// For quick updates when I have FULL CONTROL of the parameters
+// and no parameters are being passed that need to be properly 
+// bound.
+    function simpleExecute($sql) {
+        try {
+            $stmt = $this->conn->prepare($sql);
+            if (! $stmt) {
+                throw new Exception();
+            }    
+            $result = $stmt->execute();
+            if(empty($result)){
+                throw new Exception('failed execute');
+            } 
+          } catch (Exception $e) {
+            echo "Fail in prepBindExOneParam $sql: " . $e->getLine()  . 
+                  ": " . $this->conn->error .  ": " . $e->getMessage();
+            return null;        
+        }
+          
+        return $this->conn->affected_rows;
+    }
+    
+
 
 
 /////////////////////////////////
@@ -382,7 +418,7 @@ class db_class
             $paramList[] = $id;
             
 //             return array('typeHashLong'=> $typeHashLong, 'data_elements' => $data_elements);
-//             return array($sql, $typeList, $paramList); 
+//            return array($sql, $typeList, $paramList); 
             $result = $this->safeInsertUpdateDelete($sql, $typeList, $paramList);
             
             return $result;
