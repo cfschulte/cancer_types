@@ -1,0 +1,50 @@
+// 
+// _wrapper.scss:  Wed Dec 19 14:40:32 CST 2018
+// 
+
+
+/*** LOWER PORTION LAYOUT ***/
+#wrapper {
+/* 
+    margin-top:5.5em;
+ */
+    margin-top:6em;
+}
+/*** LOWER PORTION LAYOUT ***/
+/* The storage grids need a little more space for extra actions */
+#wrapper_storage {
+/* 
+    margin-top:5.5em;
+ */
+    margin-top:7em;
+}
+
+#display {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    padding:1.5em;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+.centered {
+    text-align: center;
+}
+
+.full_centered {
+    width: 100%;
+    text-align: center;
+}
+
+.left {
+    float:left;
+}
+.right {
+    float:right;
+}
+
+.clear {
+    clear: both;
+    display:block;
+}

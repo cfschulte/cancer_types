@@ -1,0 +1,202 @@
+// 
+// _button.scss:  Wed Dec 19 14:29:53 CST 2018
+// 
+
+
+
+.a_button {
+   margin-top:1.5em;
+   margin-right:3em;
+   font-size:80%;
+   font-weight:bolder;
+   text-align:center;
+   padding: 5px 0.25em ;
+}
+
+.search_button {
+   margin-left:3em;
+   margin-right:3em;
+   font-size:80%;
+   font-weight:bolder;
+   text-align:center;
+   padding: 5px 0.25em ;
+}
+
+/* TODO: rethink head action so that it is more flexible */
+.large_head_action{
+   margin-top:0.5em;    /* account for the larger font-size: */
+   margin-right:2.0em;
+   font-size:160%;
+   font-weight:bolder;
+   text-align:center;
+   padding: 5px 0.25em ;
+   display:inline-block; 
+   float: right;
+}
+
+/* disable a "link" button */
+.a_button_disabled {
+    color: #000;
+    background-color: #e8e4d8;
+    color:#333366;
+
+    margin-top:1.5em;
+    margin-right:3em;
+    font-size:80%;
+    font-weight:bolder;
+    text-align:center;
+    padding: 5px 0.25em ;
+    
+    cursor: not-allowed;
+    pointer-events: none;
+    display:block;
+    text-decoration:none; 
+    border-radius: 4px;
+}
+
+
+button.a_button{
+    color:#333366;
+/* 
+    background-color: #D5D5A0;
+ */
+	background-color:#99C8D3;
+    border-radius: 2px;
+}
+
+button.a_button:hover{
+    color: #000;
+    background-color: #e8e4d8;
+}
+
+a.a_button:link, a.a_button:visited, a.a_button:active {
+    color:#333366;
+    background-color: #DBE1DA;
+/* 
+    background-color: #D5D5A0;
+ */
+    display:block;
+    text-decoration:none; 
+/* 
+    border: 2px solid #aaa; 
+ */
+    border-radius: 4px;
+}
+
+
+a.a_button:hover {
+    color: #000;
+    background-color: #e8e4d8;
+    display:block;
+    text-decoration:none; 
+    border-radius: 4px;
+}
+
+/* Greet the user on the front page */
+.front_page_list {
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+}
+
+div.front_page_list a {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #242453;
+}
+
+.delete_button {
+    font-size: 0.8em;
+    text-decoration:none; 
+    padding-left:1em;
+}
+span.delete_button:link, span.delete_button:visited, span.delete_button:active
+ {
+    color: #055;
+}
+span.delete_button:hover {
+    color: #e00;
+    cursor: pointer;
+}
+
+/* format the to front pointers */
+a.front_page_link:link, a.front_page_link:visited, a.front_page_link:active{
+    color: #CC5F00;
+    text-decoration:none; 
+}
+
+a.front_page_link:hover {
+    color: #0088CC;
+    text-decoration:none; 
+}  
+
+
+
+button.semi_faux {
+    font-size:0.9em;
+    padding:0 0.75em;
+    margin-top:0.2em;
+    margin-left:2em;
+    border: 1px solid #aaa; 
+    border-radius: 4px;
+}
+
+.faux_button {
+    margin-left:3em;
+    padding:0 0.75em;
+}
+
+a.faux_button:link, a.faux_button:visited, a.faux_button:active, a.faux_button:hover {
+    color: #333;
+    background-color: #FFF;
+    cursor: default;
+    font-size:85%;
+    font-weight:300;
+    text-decoration: none;
+    border: 1px solid #ddd; 
+    border-radius: 4px;
+}
+
+/* 
+Making a real, submit input button look and act like a faux_button. It turns out 
+that actual "button" elements are flakey with enable/disable and changing pointer
+types.
+*/
+
+.faux_faux_button {
+    margin-left: 3em;
+    font-size: 140%;
+}
+
+/* used for enabling and disabling the print button */
+.disabled_link {
+    color: #444;
+    background-color: #777;
+    
+   pointer-events: none;
+   cursor: default;
+}
+
+
+#footer p {
+	text-align: center;
+	margin-bottom: .5em;
+}
+
+
+
+/*
+  forms.css - 16 August 2016 - originally part of primary.css
+*/
+
+.hovering {
+    cursor: pointer;
+}
+
+
+td.centered {
+    text-align: center;
+}
+tr td, input {
+    text-align: left;
+}

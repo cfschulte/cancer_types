@@ -129,10 +129,7 @@ class table_class {
  // and then augmented.
     function css_list() {
 ?>
-    <link rel="Stylesheet" type="text/css" href="/cancer_types/css/base.css" />
-    <link rel="Stylesheet" type="text/css" href="/cancer_types/css/tables.css" />
-    <link rel="Stylesheet" type="text/css" href="/cancer_types/css/forms.css" />
-    <link rel="Stylesheet" type="text/css" href="/jquery/jquery-ui/jquery-ui.theme.css" />
+<link rel="Stylesheet" type="text/css" href="/cancer_types/css/style.css" />    <link rel="Stylesheet" type="text/css" href="/jquery/jquery-ui/jquery-ui.theme.css" />
 
 <?php 
     }

@@ -1,0 +1,66 @@
+// 
+// _print.scss:  Wed Dec 19 14:47:09 CST 2018
+// 
+
+
+
+@media print {
+    html { 
+        margin-top:-60px;
+        padding: 0;
+        margin-top:-60px;
+
+        width: 8.5in;
+        height: 11in;
+        
+        overflow: hidden;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    body {
+        overflow: hidden;
+    }
+    #display {  
+        position: absolute;
+        padding:2.0em;
+    }
+    .printable {
+        background-color: #FFF;
+        margin-top: -1em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+  
+   .page_header {
+      display:none;
+   }
+   
+   .blanket_orders{
+      display:none;
+   }
+   
+   #side_menu {
+      display:none;
+   }
+   button {
+      display: none;
+   }
+   a {
+      display: none;
+   }
+
+    input[type=text] {
+        border: none;
+        border-bottom: 2px solid #000000;
+    }
+    input[type=submit] {
+        display: none;
+    }
+
+    @page {
+        width:100%;
+    background-color: #FFF;
+    }
+    .main-menu, #side_menu {
+      display: none;
+    }
+}

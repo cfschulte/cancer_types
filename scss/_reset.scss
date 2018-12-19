@@ -1,0 +1,65 @@
+// 
+// _reset.scss:  Wed Dec 19 14:14:44 CST 2018
+// 
+
+
+html, body {
+    font-family: $verlag-font;
+    width:100%;
+    height:100%;
+}
+
+
+
+h1 {
+    padding-left:1em;
+}
+
+/** TOP **/
+.page_header{
+	margin-top:-6em;
+	margin-left:-10px;
+	border-bottom: 10px #666152 solid;
+	width:100%;
+	background-color:$header_bg_color;
+	z-index: 10;
+	opacity: 1.0;
+
+	position: fixed;
+} 
+
+.page_header h1 {
+    vertical-align: top;
+    overflow: hidden;
+   
+    display:inline;
+    float: left;
+}
+
+.in_header {
+    position: relative;
+}
+
+/*  format for the links at the top of the page  */
+.head_action {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    padding-top: 1em;
+    display:inline-block; 
+    float: right;
+}
+
+/*  */
+.aligned_head_button{
+    margin-top: 1.5em;
+}
+
+a.home_button {
+    padding: 1em 0 0 2em;
+    float: left;
+}
+
+/*  Align the date inputs for the orders list */
+.date_nav {
+    padding-top: 0.5em;
+}
