@@ -10,9 +10,6 @@ order buttons for individual rows - like delete buttons, only they are another c
 
 td.order a:link, td.order a:visited, td.order a:active {
     color:#333366;
-/* 
-    background-color: #EAEAA0;
- */
     background-color: #DBE1DA;
 }
 
@@ -203,6 +200,11 @@ td.link_button a:hover {
     display:block;
     text-decoration:none; 
     border-radius: 4px;
+}
+
+
+tr td, input {
+    text-align: left;
 }
 
 
