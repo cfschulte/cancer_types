@@ -8,7 +8,7 @@
 <div class="dropdown">
   <button class="dropbtn">Tables</button>
   <div id="myDropdown" class="dropdown-content">
-    <a href="/cancer_types/views_containers/table_cancer_type.php">Cancer Types</a>
+    <a href="/cancer_types/views_controllers/table_cancer_type.php">Cancer Types</a>
   </div>
 </div>
 

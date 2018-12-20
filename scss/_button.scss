@@ -2,66 +2,55 @@
 // _button.scss:  Wed Dec 19 14:29:53 CST 2018
 // 
 
-
-
-.a_button {
-   margin-top:1.5em;
-   margin-right:3em;
-   font-size:80%;
+@mixin base_button($font_size) {
+   font-size:$font_size;
    font-weight:bolder;
    text-align:center;
    padding: 5px 0.25em ;
+   border-radius: 2px;
+}
+
+.a_button {
+   @include base_button($default-button-fontsize);
+   margin-top:1.5em;
+   margin-right:3em;
 }
 
 .search_button {
+   @include base_button($default-button-fontsize);
    margin-left:3em;
    margin-right:3em;
-   font-size:80%;
-   font-weight:bolder;
-   text-align:center;
-   padding: 5px 0.25em ;
 }
 
 /* TODO: rethink head action so that it is more flexible */
 .large_head_action{
+   @include base_button($large-button-fontsize);
    margin-top:0.5em;    /* account for the larger font-size: */
    margin-right:2.0em;
-   font-size:160%;
-   font-weight:bolder;
-   text-align:center;
-   padding: 5px 0.25em ;
    display:inline-block; 
    float: right;
 }
 
 /* disable a "link" button */
 .a_button_disabled {
+   @include base_button($default-button-fontsize);
     color: #000;
     background-color: #e8e4d8;
     color:#333366;
 
     margin-top:1.5em;
     margin-right:3em;
-    font-size:80%;
-    font-weight:bolder;
-    text-align:center;
-    padding: 5px 0.25em ;
     
     cursor: not-allowed;
     pointer-events: none;
     display:block;
     text-decoration:none; 
-    border-radius: 4px;
 }
 
 
 button.a_button{
     color:#333366;
-/* 
-    background-color: #D5D5A0;
- */
 	background-color:#99C8D3;
-    border-radius: 2px;
 }
 
 button.a_button:hover{
@@ -72,15 +61,8 @@ button.a_button:hover{
 a.a_button:link, a.a_button:visited, a.a_button:active {
     color:#333366;
     background-color: #DBE1DA;
-/* 
-    background-color: #D5D5A0;
- */
     display:block;
     text-decoration:none; 
-/* 
-    border: 2px solid #aaa; 
- */
-    border-radius: 4px;
 }
 
 
@@ -89,7 +71,6 @@ a.a_button:hover {
     background-color: #e8e4d8;
     display:block;
     text-decoration:none; 
-    border-radius: 4px;
 }
 
 /* Greet the user on the front page */
@@ -138,7 +119,6 @@ button.semi_faux {
     margin-top:0.2em;
     margin-left:2em;
     border: 1px solid #aaa; 
-    border-radius: 4px;
 }
 
 .faux_button {

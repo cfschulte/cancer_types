@@ -3,3 +3,5 @@ cancer_types.bbprojectd
 cancer_types.txt
 .DS_Store
 css/style_old.css
+css/style_orig.css
+scss/style_new.css.map

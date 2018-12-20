@@ -117,47 +117,47 @@ a.home_button {
 }
 
 .a_button {
-  margin-top: 1.5em;
-  margin-right: 3em;
   font-size: 80%;
   font-weight: bolder;
   text-align: center;
   padding: 5px 0.25em;
+  margin-top: 1.5em;
+  margin-right: 3em;
 }
 
 .search_button {
-  margin-left: 3em;
-  margin-right: 3em;
   font-size: 80%;
   font-weight: bolder;
   text-align: center;
   padding: 5px 0.25em;
+  margin-left: 3em;
+  margin-right: 3em;
 }
 
 /* TODO: rethink head action so that it is more flexible */
 .large_head_action {
-  margin-top: 0.5em;
-  /* account for the larger font-size: */
-  margin-right: 2em;
   font-size: 160%;
   font-weight: bolder;
   text-align: center;
   padding: 5px 0.25em;
+  margin-top: 0.5em;
+  /* account for the larger font-size: */
+  margin-right: 2em;
   display: inline-block;
   float: right;
 }
 
 /* disable a "link" button */
 .a_button_disabled {
+  font-size: 80%;
+  font-weight: bolder;
+  text-align: center;
+  padding: 5px 0.25em;
   color: #000;
   background-color: #e8e4d8;
   color: #333366;
   margin-top: 1.5em;
   margin-right: 3em;
-  font-size: 80%;
-  font-weight: bolder;
-  text-align: center;
-  padding: 5px 0.25em;
   cursor: not-allowed;
   pointer-events: none;
   display: block;
