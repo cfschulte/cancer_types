@@ -292,14 +292,17 @@ class form_class {
  /*************************************************************************/  
     /////////////
     // get the largest primary ID - lots of these are auto-increment, so this is mostly for display.
+    // NOTE: We should leave this to AUTO_INCREMENT.
+
     function getLargestPrimaryID() {
       
         $db_obj = new db_class();
         $table_count =  $db_obj->tableCount($this->table_name);
+
         if($table_count > 0){
             $sql = "SELECT MAX(" . $this->primary_key . ") AS id FROM " . $this->table_name ;
             $db_table = $db_obj->getTableNoParams($sql);
-            $largest_id = $db_table[0][id];
+            $largest_id = $db_table[0]['id'];
         } else {
             $largest_id = 0;
         }
@@ -337,7 +340,7 @@ class form_class {
             echo  $choice[$label_name] ;
             echo ': <input   type="radio" name="' . $form_name . '" value="'  . $choice[$id_name] . '"' ;
             // is this checked?
-            if($choice[$id_name] == $current_choice) {
+            if($choice[$id_name] === $current_choice) {
                 echo ' checked ';
             }
             echo '> ';
@@ -381,7 +384,7 @@ class form_class {
     // Used to set the correct option in a select input.
     //  Does nothing if the option is not selected 
     function setSelection($option, $status) {
-        echo ($option == $status)? 'selected': '';
+        echo ($option === $status)? 'selected': '';
     }
 
     // //////////////////////
@@ -391,6 +394,35 @@ class form_class {
         return ($option == $status)? 'selected': '';
     }
     
+  ////////////////
+  //  This is a generic checkbox. It should be overwritten by a child class.
+      function checkBox($list_table_name, $item, $idListOfChecked) {
+            $inputId = $list_table_name . $item['id'];
+            echo '       <input type="checkbox" class="' . $list_table_name . '" name="' . $list_table_name . '" group="' . $list_table_name . '" id="' . $inputId . '"' ;
+            echo ' value="' . $item['id'] . '" ' . $this->isChecked( $idListOfChecked, $item['id'] )  . '> ';
+            echo ' <label for="'. $inputId .'">' . $item['descriptor'] . "</label>\n";
+      }
+      
+      
+  ////////////////
+  // check to see if a var type check box should be checked or not
+    function isChecked ($checkedList, $checkBoxID) {
+    
+        if(empty($checkedList)){ // return nothing if there is nothing set.
+            return ;
+        }
+
+       // return the word 'checked' if it should be checked 
+        if(in_array($checkBoxID, $checkedList)) { 
+            return ' checked ';
+        }
+    
+       // default: do nothing
+        return ;
+    }
+
+
+
     
  /*************************************************************************  
  UNDERSTAND WHAT IS GOING ON BEYOND THIS. INITIALS SHOULD BE SET ALREADY
@@ -495,64 +527,5 @@ class form_class {
          }
     }
 
- /*************************************************************************/ 
- // INVENTORY LOCATIONS 
- // As of May, 2018, only cell_inventory and antibody_inventory use this storage
- // widget. I could see a point where this is used by a few databases. 
- // Time to make it more universal  TODO
- /*************************************************************************/  
-    // 
-//     function handle_storage() {  
-//        // since the inventory numbers used by the location grid are not 
-//        // in the same format as the numbers used here, we need to fix them
-//        // a bit (strip the leading zeros).
-//         $trimmed_inv_num = sprintf($this->id);
-//         $sql = 'SELECT * FROM inventory_storage WHERE id=? AND db_table=?';
-//         $db_obj = new db_class();
-//         $db_table = $db_obj->safeSelect($sql, 'ss', array($trimmed_inv_num, $this->table_name));
-//         $db_obj->closeDB();
-// //         showArray($db_table);
-//         
-//         if( ! empty($db_table) ) {
-//             $box_info = $this->collateStorageInfo($db_table) ;
-//             echo '<h3>Storage Locations</h3>';
-//             //showArray($box_info);
-//             // loop through the boxes and update the information
-//             foreach($box_info as $box) {
-//                 // link to the box listed 
-//                 echo '<b><a href="' . $box['url'] . '">Box ' .  $box['stack_num'] . ' ' .  $box['stack_letter'] . '</a></b> -- Cells: ';
-//                 foreach( $box['grid_list'] as $location) {
-//                     echo $location . ' ';
-//                 }
-//                 echo '<br><br>';
-//             }
-//             
-//         } else {
-//             echo 'none listed'; 
-//         }
-//     }
-//     
-//  /*************************************************************************/  
-//       // TODO: explain this more clearly 
-//       // create a structure to label each box and storage cell 
-//       // for the storage ids. Both storage box and inventory_storage are going to 
-//       //  need alteration.
-//     function collateStorageInfo( $db_table ) {
-//         $returnArray = array();
-//         
-//         foreach($db_table as $position) {
-//             if(!array_key_exists($position['box_id'], $returnArray)) {
-//                  $returnArray[$position['box_id']] = array(); // create a new information structure 
-//                  $returnArray[$position['box_id']]['url']  = '/cancer_types/tables/LN_storage.php?box_id=' . $position['box_id'];
-//                  $returnArray[$position['box_id']]['stack_num'] = $position['stack_num'];
-//                  $returnArray[$position['box_id']]['stack_letter'] = $position['stack_letter'];
-//                  $returnArray[$position['box_id']]['grid_list'] = array($position['grid_cell_number']);
-//             } else {
-//                   $returnArray[$position['box_id']]['grid_list'][] = $position['grid_cell_number'];
-//             }
-//         }
-//         
-//         return $returnArray;
-//     }
-   
+
 }
