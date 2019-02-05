@@ -85,7 +85,7 @@ class form_cancer_type extends form_class {
     <br> <br>
      <span class="tag">Overview:</span><textarea class="form_text" name="overview"><?php echo $this->overview; ?></textarea>
 <br><br>
-     <input type="submit" id="undo_generic_update" name="undo_generic_update" value="undo" >
+     <button class="faux_button" id="undo_generic_update" >Undo</button>
    </form>
 
    </div>
