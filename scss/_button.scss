@@ -6,7 +6,8 @@
    font-size:$font_size;
    font-weight:bolder;
    text-align:center;
-   padding: 5px 0.25em ;
+   padding: 6px 0.25em ;
+   border: 1px solid #ddd; 
    border-radius: 2px;
 }
 
@@ -114,27 +115,31 @@ a.front_page_link:hover {
 
 
 button.semi_faux {
-    font-size:0.9em;
-    padding:0 0.75em;
-    margin-top:0.2em;
+    @include base_button($default-button-fontsize);
+//     padding:0 0.75em;
+//     margin-top:0.2em;
     margin-left:2em;
-    border: 1px solid #aaa; 
+//     border: 1px solid #aaa; 
+//     border-radius: 3px;
 }
 
 .faux_button {
+    @include base_button($default-button-fontsize);
+    color: #000;
+    background-color: #FFF;
     margin-left:3em;
     padding:0 0.75em;
+    text-decoration: none;
+//     border: 1px solid #ddd; 
 }
 
 a.faux_button:link, a.faux_button:visited, a.faux_button:active, a.faux_button:hover {
-    color: #333;
-    background-color: #FFF;
+//     color: #000;
+//     background-color: #FFF;
     cursor: default;
-    font-size:85%;
-    font-weight:300;
-    text-decoration: none;
-    border: 1px solid #ddd; 
-    border-radius: 4px;
+//     font-size:85%;
+//     border: 1px solid #ddd; 
+//     border-radius: 3px;
 }
 
 /* 

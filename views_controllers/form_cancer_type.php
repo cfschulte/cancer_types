@@ -39,8 +39,8 @@ class form_cancer_type extends form_class {
     <div id="form_wrap">
     <a class="faux_button" id="done_goback_button" href="#">Go Back</a>
 <?php  if(! $this->is_find_form AND ! $this->is_new): ?>
-     <button class="semi_faux" id="clone_this" href="#" <?php if( $this->is_new == 1 ){ echo 'disabled';}  ?> >Clone</button>
-        <a class="faux_button" href="/cancer_types/forms/form_cancer_type.php?new=yes">New Cancer Type</a>
+     <button class="faux_button" id="clone_this" href="#" <?php if( $this->is_new == 1 ){ echo 'disabled';}  ?> >Clone</button>
+        <a class="faux_button" href="/cancer_types/views_controllers/form_cancer_type.php?new=yes">New Cancer Type</a>
      <span class="right"><a class="faux_button" id="delete" href="#">Delete</a></span>
 <?php  elseif($this->is_find_form) : ?>
         <span style="float:right">
