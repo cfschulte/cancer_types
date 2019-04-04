@@ -45,8 +45,8 @@ class db_class
 
   /////////////////////////////////
   // Basic description, because it's useful...    
-    function tableDescription($table_name) {
-         $sql = "DESC $table_name";
+    function tableDescription($table_title) {
+         $sql = "DESC $table_title";
         return $this->getTableNoParams($sql);
     }
 
@@ -55,8 +55,8 @@ class db_class
   // a bound sql query. Sets text to s, whole numbers to i, decimals 
   // to d, and binary data to b. It returns a has of column names and 
   // type declaration 
-    function columnTypeHash($table_name) {
-        $desc_table = $this->tableDescription($table_name);
+    function columnTypeHash($table_title) {
+        $desc_table = $this->tableDescription($table_title);
         $descHash = array() ; // for 5.3 compatablility 
 
         foreach($desc_table as $col_desc) {
@@ -82,8 +82,8 @@ class db_class
   // Basically, this is the same as the previous function, but
   // It also adds the actual type, so one can ensure the correct 
   // date format.
-    function columnTypeHashLong($table_name) {
-        $desc_table = $this->tableDescription($table_name);
+    function columnTypeHashLong($table_title) {
+        $desc_table = $this->tableDescription($table_title);
         $descHash = array() ; // for 5.3 compatablility 
 
         foreach($desc_table as $col_desc) {
@@ -120,10 +120,10 @@ class db_class
     $sql = "SELECT k.column_name
             FROM information_schema.table_constraints t
             JOIN information_schema.key_column_usage k
-            USING(constraint_name,table_schema,table_name)
+            USING(constraint_name,table_schema,table_title)
             WHERE t.constraint_type='PRIMARY KEY'
               AND t.table_schema='$DATABASE'
-              AND t.table_name='$table'";
+              AND t.table_title='$table'";
               
     $db_table = $this->getTableNoParams($sql);
     return $db_table[0]['column_name'];
@@ -304,7 +304,7 @@ class db_class
             
             // MULTI BIND
             // turn typeStr and paramList into one array? 
-            // TODO: better understand callbackParams and call_user_func_array 
+            // TODO: better understand php callbackParams and call_user_func_array 
             $callbackParams = array();
             $callbackParams[] = & $typeStr;
             // pass the getTableNoParamsresses of the escaped parameters to the statement 
@@ -391,12 +391,14 @@ class db_class
                 throw new Exception("No id in data_elements");
             }
             $id = $data_elements['id'];
+           // Don't update the row's id. Unset it so it isn't 
+           // included in the foreach.
             unset( $data_elements['id'] );
             
             $typeHashLong = $this->columnTypeHashLong($table);
             $sql = 'UPDATE ' . $table . ' SET ';
             
-            $typeStr = '';
+            $typeList = '';
             $paramList = array();
             
            // Which columns get set?
