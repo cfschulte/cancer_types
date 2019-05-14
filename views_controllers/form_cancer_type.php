@@ -4,7 +4,6 @@
 
 require_once "../essentials.php";
 require_once "form_class.php";
-require_once "inter_table_access.php";
 
 class form_cancer_type extends form_class {
 

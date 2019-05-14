@@ -169,7 +169,6 @@ $(document).ready(function() {
         } else if($(this).is('textarea')) {
             db_data['type'] = 'textarea';
         }
-//         console.log('db_data type: ' + db_data['type']);
         db_data['name'] = $(this).attr('name');
         db_data['value'] = $(this).val();
         db_data['id'] = $('form.generic_update input[name=id]').val();
@@ -178,7 +177,7 @@ $(document).ready(function() {
 //         db_data['userid'] = $(this).siblings("input[name=userid]").val();
         db_data['is_new'] = $("form.generic_update input[name=is_new]").val();
 
-       console.log( db_data);
+//        console.log( db_data);
         
         
         // New records have too many table dependent things going on 
@@ -210,11 +209,8 @@ $(document).ready(function() {
                         data: db_data
                     },
                     success: function( json ) {
-    //                     console.log(json);
-                     
                         // Update the title if need be
                          if(db_data['name'] == db_data['title_input']) {
-    //                         console.log('update the title to ' + db_data['value']);
                             $('title').html(db_data['value']);
                             $('h1').html(db_data['value']);
                          }

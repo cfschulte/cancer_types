@@ -120,10 +120,10 @@ class db_class
     $sql = "SELECT k.column_name
             FROM information_schema.table_constraints t
             JOIN information_schema.key_column_usage k
-            USING(constraint_name,table_schema,table_title)
+            USING(constraint_name,table_schema,table_name)
             WHERE t.constraint_type='PRIMARY KEY'
               AND t.table_schema='$DATABASE'
-              AND t.table_title='$table'";
+              AND t.table_name='$table'";
               
     $db_table = $this->getTableNoParams($sql);
     return $db_table[0]['column_name'];

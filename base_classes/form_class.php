@@ -165,9 +165,12 @@ class form_class {
     $this->additionalHeaderStuff();
 ?>
  </div>
- </div>
  <div style="clear:both;"></div>
 <?php 
+  include "../menu.php";   
+  ?>
+ </div>
+<?php
 //  <div style="clear:both;"></div> used to be in menu.php, but this is more flexible
 //      include "../menu.php";
    }
@@ -354,7 +357,7 @@ class form_class {
     function buildGenericSelect($tablename, $form_name, $id_name, $label_name, $current_choice=0, $disabled=0) {
         $pulldownList = $this->getPulldownList($tablename, $id_name, $label_name);
 
-        echo '<select id="' . $form_name . '" name="' . $form_name ;
+        echo '<select id="' . $form_name . '" name="' . $form_name . '"';
         if($disabled) {
            echo ' disabled '; 
         }

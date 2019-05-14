@@ -4,6 +4,7 @@
  * Version 0.0.1  
  * build: Wed Dec 19 15:03:14 CST 2018
  * Maintained by Department of Human Oncology, UW–Madison, cfschulte@humonc.wisc.edu
+ * sass --no-source-map
  */
 html, body {
   font-family: "Verlag", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -23,7 +24,7 @@ button {
 /** TOP **/
 .page_header {
   margin-top: -6em;
-  margin-left: -10px;
+  margin-left: -8px;
   border-bottom: 10px #666152 solid;
   width: 100%;
   background-color: #8EA29F;
@@ -821,5 +822,3 @@ span.remark {
   text-align: center;
   margin-bottom: 0.5em;
 }
-
-/*# sourceMappingURL=style.css.map */

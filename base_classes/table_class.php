@@ -175,7 +175,6 @@ class table_class {
  <?php  include "../menu.php";   ?>
 </div>
 <?php 
-//      include "../menu.php";
    }
 
  /*************************************************************************/  

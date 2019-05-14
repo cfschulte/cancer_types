@@ -58,91 +58,13 @@ function cloneRecord($indata){
 // Clone the data in the tables that are linked to 
 // the newly cloned one. This just parses those 
 // responsibilities to the actual cloners 
+// It is blank for the basic build 
 function cloneLinkedTableData($table, $new_id, $old_id){
     $result = 0;
     
-    switch ($table) {
-        case 'vendors':
-            $result = cloneBlanketOrders($table, $new_id, $old_id);
-            break;
-        case 'biochemical_index':
-             $result =  cloneLotInfo($table, $new_id, $old_id); // no break;
-         case 'current_lab_inventory':
-         case 'antibody_inventory':
-            $result = cloneApplicationMatches($table, $new_id, $old_id);
-            break;
-    }
-    
-    
-//     if($table == 'vendors'){
-//         require_once "blanket_orders.php";
-//         $result = cloneBlanketOrders($table, $new_id, $old_id);
-//     } elseif( $table == 'biochemical_index' || $table == 'current_lab_inventory' ) {
-//         $result = cloneApplicationMatches($table, $new_id, $old_id);
-//         $result .= 'lot_info' . cloneLotInfo($table, $new_id, $old_id);
-//     }
     
     return $result;
 }
-
-///////////////////////////////////////////////////
-//  
-function cloneBlanketOrders($table, $new_id, $old_id) {
-    $db_obj = new db_class();
-    
-    $result = '';
-    $sql = 'SELECT * FROM blanket_orders WHERE vendor_id=?';
-    $db_table = $db_obj->simpleOneParamRequest($sql, 'i', $old_id);
-    foreach ( $db_table as $blanket_order ){
-        $blanket_order['vendor_id'] = $new_id;
-        // create a new lot_info with the current biochemical id 
-        $result .= $db_obj->buildAndExecuteInsert( 'blanket_orders', $blanket_order, 'id' );
-    }
-    
-    $db_obj->closeDB();
-    return $result;
-}
-
-
-///////////////////////////////////////////////////
-//
-function cloneApplicationMatches($table, $new_id, $old_id) {
-    $db_obj = new db_class();
-    
-    $result = '';
-    $sql = 'SELECT * FROM application_matches WHERE table_name=? AND table_row_id=?';
-    $typeStr = 'si';
-    $paramList = array($table, $old_id);
-    $db_table = $db_obj->safeSelect($sql, $typeStr, $paramList);
-    
-    foreach( $db_table as $app_match ){
-        $app_match['table_row_id'] = $new_id;
-        $result .= $db_obj->buildAndExecuteInsert( 'application_matches', $app_match, 'id' );
-    }
-    
-    $db_obj->closeDB();
-    return $result;
-}
-
-
-///////////////////////////////////////////////////
-//
-function cloneLotInfo($table, $new_id, $old_id) {
-    $db_obj = new db_class();
-    
-    $result = '';
-    $sql = 'SELECT * FROM bio_index_lot_info WHERE biochem_id=?';
-    $db_table = $db_obj->simpleOneParamRequest($sql, 'i', $old_id);
-    foreach ( $db_table as $lot_info ){
-        $lot_info['biochem_id'] = $new_id;
-        // create a new lot_info with the current biochemical id 
-        $result .= $db_obj->buildAndExecuteInsert( 'bio_index_lot_info', $lot_info, 'id' );
-    }
-    
-    $db_obj->closeDB();
-    return $result;
-}
-
 
 
 ///////////////////////////////////////////////////
