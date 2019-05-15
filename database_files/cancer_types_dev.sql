@@ -60,8 +60,8 @@ CREATE TABLE `backup_table` (
 -- Define cancer type list 
 -- 
 -- general overview
-DROP TABLE IF EXISTS `cancer_type_list`;
-CREATE TABLE `cancer_type_list` (
+DROP TABLE IF EXISTS `cancer_type`;
+CREATE TABLE `cancer_type` (
     id                   mediumint(9) NOT NULL AUTO_INCREMENT,
     cancer_type          varchar(127) DEFAULT NULL,
     synopsis             varchar(255) DEFAULT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE `treatment_program_list` (
    cancer_type_id       mediumint(9) NOT NULL,
 --    CONSTRAINT `cancer_type_id`
 --    FOREIGN KEY (`cancer_type_id`) 
---        REFERENCES cancer_type_list (id),
+--        REFERENCES cancer_type (id),
    treat_prog_id   int      NOT NULL,
 --    CONSTRAINT `treat_prog_id`
 --    FOREIGN KEY (`treat_prog_id`) 

@@ -21,7 +21,7 @@ class form_cancer_type extends form_class {
 
 /*************************************************************************/   
     function __construct() {
-        parent::__construct('cancer_type_list', 'id','table_cancer_type.php');
+        parent::__construct('cancer_type', 'id','table_cancer_type.php');
         $this->largestProductID = $this->getLargestPrimaryID();   
         $this->is_new = '0';
         $this->is_clone = FALSE;
@@ -68,7 +68,7 @@ class form_cancer_type extends form_class {
      <span class="tag">ID:</span> <b><?php echo $this->id ?></b><br><br>
 <?php  endif ?>
      <input type="hidden" name="is_new" value="<?php echo $this->is_new ?>">
-     <input type="hidden" name="table" value="cancer_type_list">
+     <input type="hidden" name="table" value="cancer_type">
      <input type="hidden" name="table_display" value="<?php echo $this->table_display ?>">
      <input type="hidden" name="title_input"  value="cancer_type"> 
      
@@ -101,14 +101,13 @@ $this->deleteInfo();
         
         if( array_key_exists('find', $indata) ) {
             $this->is_find_form = 1;
-            $this->title = 'Search Products';
+            $this->title = 'Search';
         } elseif(array_key_exists('new', $indata)) {
             $this->is_new = '1';
             $this->id = $this->largestProductID + 1;
             
             $this->cancer_type = '';
             $this->synopsis = '';
-            $this->product_name = '';
             $this->overview = '';
             $this->primary_anatomical_site = '';
             $this->other_anatom_type_text = '';
@@ -119,7 +118,6 @@ $this->deleteInfo();
            
             $this->cancer_type = $db_table['cancer_type'];
             $this->synopsis = $db_table['synopsis'];
-            $this->product_name = $db_table['product_name'];
             $this->overview = $db_table['overview'];
             $this->primary_anatomical_site = $db_table['primary_anatomical_site'];
             $this->other_anatom_type_text = $db_table['other_anatom_type_text'];

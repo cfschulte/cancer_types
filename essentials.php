@@ -153,9 +153,27 @@ function getUserInfo( $userid ){
 
 ////////////////////
 // Get shibboleth information for userid 
-// TODO: get this working with shibboleth
 function check_login() {
-    $userid = $cfschulte;
+  // we will get the cookies up and going for this later. 
+	// base url
+	$user_privileges = 0; // for possible later use
+	$userid = '';
+    if( array_key_exists('uid', $_SERVER)){
+        $userid = $_SERVER['uid'];
+    } else {
+        $userid= 'enoon';
+        $user_privileges = 0;
+        if($_SERVER['HTTP_HOST'] == '127.0.0.1' || $_SERVER['HTTP_HOST'] == 'localhost') // debug on the local host 
+             $userid = 'cfschulte';
+    }
+    $userInfo = getUserInfo( $userid );
+   // showArray($userInfo);
+    // Let them through if they are on the list, otherwise send them to disallow.
+    if( empty($userInfo) ){
+        header('Location: /build_lab_inventory/unauthorized.php');
+    }
+    // else follow through to the called page 
+    return $userInfo;
 }
 
 

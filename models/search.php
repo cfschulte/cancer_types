@@ -17,17 +17,14 @@ function search_and_display( $criteria ) {
     $table_display = $criteria["table_display"];
     
     $result_table = generate_and_execute_query($form_data, $conjunction);
-//     return $result_table;
     if( empty($result_table)){
        // tell the user that this yielded nothing 
         return array('inform' => "No matching records.");
     } else {
-//           return $result_table;
-        $url = '/cancer_types/tables/' .  $table_display . '?';
+        $url = '/cancer_types/views_controllers/' .  $table_display . '?';
         
         $count = 0;
         foreach($result_table as $sub) {
-//             return array('key' => $key, 'value' => $value);
             foreach($sub as $key=>$value){
                 if($count > 0) {
                     $url .= '&';
@@ -75,6 +72,5 @@ function generate_and_execute_query($form_data, $conjunction){
     $db_obj->closeDB();
     
     return $db_table;
-//     return array('sql' => $sql, 'typestr' => $typestr, 'params' => $params);
 }
 

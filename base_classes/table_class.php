@@ -182,7 +182,7 @@ class table_class {
    function additional_page_header_stuff() {
 ?>   
 <?php if( $this->table_name != 'users' ): ?>
- <a class="head_action a_button" href="/cancer_types/forms/<?php echo $this->edit_page; ?>?find=yes">Find</a>
+ <a class="head_action a_button" href="/cancer_types/views_controllers/<?php echo $this->edit_page; ?>?find=yes">Find</a>
 <?php endif ?>
  <a class="head_action a_button" href="/cancer_types/views_controllers/<?php echo $this->edit_page; ?>?new=yes">New Item</a>
  <button class="head_action a_button" id="undo_delete" name="undo_delete" >Undo Delete</button>

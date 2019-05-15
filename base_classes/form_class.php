@@ -214,7 +214,7 @@ class form_class {
      <input type="hidden" id="primary_key"  name="primary_key" value="<?php echo $this->primary_key ?>">
      <input type="hidden" id="primary_key_value" name="primary_key_value" value="<?php echo $this->primary_key_value ?>">
      <input type="hidden" id="delete_from_table" name="delete_from_table" value="<?php echo $this->table_name ?>">
-     <input type="hidden" id="return_address" name="return_address" value="/cancer_types/tables/<?php echo $this->table_display ?>">
+     <input type="hidden" id="return_address" name="return_address" value="/cancer_types/views_controllers/<?php echo $this->table_display ?>">
     </form>
 <?php
        }

@@ -1,5 +1,5 @@
 <?php
-// products.php -  Tue May 1 10:56:04 CDT 2018
+// cancer_types.php -  Tue May 1 10:56:04 CDT 2018
 // 
 
 require_once "../essentials.php";
@@ -17,7 +17,7 @@ class table_cancer_type extends table_class {
  /*************************************************************************/  
  // constructor
     function __construct() {
-        parent::__construct('Cancer Types', 'cancer_type_list', 'form_cancer_type.php',
+        parent::__construct('Cancer Types', 'cancer_type', 'form_cancer_type.php',
           array("id" => "ID",
                 "cancer_type" => "Cancer Type",
                 "synopsis" => "Synopsis",
