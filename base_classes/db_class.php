@@ -133,7 +133,7 @@ class db_class
   // GET A QUICK COUNT  
   function tableCount( $table ){
       $primary_key = $this->getPrimaryKey($table);
-//       return $primary_key;
+      
       $sql = "SELECT COUNT(" . $primary_key . ") FROM " . $table;
       
       $db_table = $this->getTableNoParams($sql);
@@ -429,6 +429,44 @@ class db_class
                  ": " . $this->conn->error;
             return null;        
         }
+    }
+
+  //////////////////////////////
+  ///
+    function hasForeignKey($table, $column) {
+        $table_desc = $this->tableDescription($table);
+        
+        foreach($table_desc as $col_desc){
+            // find the column 
+            if($col_desc['Field'] == $column) {
+                // check if it has a MUL key
+                if($col_desc['Key'] == 'MUL'){
+                    return 1;
+                }
+            }
+        }
+        
+        return 0;
+    }
+
+  //////////////////////////////
+  /// Got this from https://stackoverflow.com/questions/806989/how-to-find-all-tables-that-have-foreign-keys-that-reference-particular-table-co
+  // user sonance207  -- though altered heavily.
+    function getFKeyParentTable($table, $column, $referenced_column='id') {
+      $sql = "SELECT  ke.REFERENCED_TABLE_NAME parentTable, ke.TABLE_NAME childTable, ke.COLUMN_NAME ChildColumnName";
+      $sql .= " FROM information_schema.KEY_COLUMN_USAGE ke";
+      $sql .= " WHERE ke.referenced_table_name IS NOT NULL";
+      $sql .= " AND ke.REFERENCED_COLUMN_NAME = '$referenced_column'";
+      $sql .= " AND ke.TABLE_NAME = '$table'";
+      $sql .= " AND ke.COLUMN_NAME =  '$column' ";
+      
+//       $stmt = $this->conn->prepare($sql);
+//       return $stmt;
+      $table = $this->getTableNoParams($sql);
+      
+      
+      
+      return $table[0]['parentTable'];
     }
 
     

@@ -31,7 +31,7 @@
  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
  
   
- <link rel="Stylesheet" type="text/css" href="/cancer_types/css/base.css" />
+ <link rel="Stylesheet" type="text/css" href="/cancer_types/css/style.css" />
 
  <Title>Cancer Types</Title>
 
