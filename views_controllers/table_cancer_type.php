@@ -26,6 +26,37 @@ class table_cancer_type extends table_class {
         );
     }
 
+
+ /*************************************************************************/  
+   // table_row  -- This is where most of the overriding should happen. 
+    function table_row($row) {
+        $id = $row['id'];
+        $anatomical_site = $row['other_anatom_type_text'];
+        $other_anatom_type_text = $row['other_anatom_type_text'];
+        echo '<tr>';
+        while ( list($key, $datum) = each($row) ) {
+           if($key == $this->primary_key) {
+                $this->table_cell_primary($key, $datum);
+           } else {
+                $this->table_cell($key, $datum);
+           }
+        }
+        echo '</tr>' . "\n";
+    }
+
+   
+ /*************************************************************************/  
+   // get_sql  -- Meant to be overridden by child classes
+   function get_sql() {
+        $sql  = 'SELECT ct.id, ct.cancer_type, ct.synopsis, pas.descriptor as anatomical_site, ct.other_anatom_type_text ';
+        $sql .= 'FROM cancer_type AS ct ';
+        $sql .= 'LEFT JOIN primary_anatomical_site AS pas ';
+        $sql .= 'ON ct.primary_anatomical_site=pas.table_index ';
+        
+       return $sql;
+    }
+
+
 } // end class
 
 

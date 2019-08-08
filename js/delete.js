@@ -78,16 +78,6 @@ $(document).ready(function(){
             success: function(json){
                 console.log(json);
                 location.reload();
-               // refresh the display 
-//                 var table_display = document.getElementById("display");
-//                 var content = table_display.innerHTML;
-//                 table_display.innerHTML = content;
-                
-               // check whether or not the undo button should be updated  
-//                 if(json.backup_count < 1){
-//                     $("#undo_delete").removeClass("a_button");
-//                     $("#undo_delete").addClass("a_button_disabled");
-//                 }
             },
             error: function( xhr, status, errorThrown ) {
                 alert( "Sorry, there was a problem!" );
@@ -117,14 +107,9 @@ $(document).ready(function(){
             if(json.num_deletes < 1){
                 $("#undo_delete").removeClass("a_button");
                 $("#undo_delete").addClass("a_button_disabled");
-//  
-//                 $("#undo_goes_here").html('<button class="head_action a_button_disabled" id="undo_delete" name="undo_delete" >Undo Delete</button>')
-//                 $("#undo_goes_here").html('<a class="head_action a_button_disabled" id="undo_delete" href="">Undo Delete</a>')
             } else {
                 $("#undo_delete").removeClass("a_button_disabled");
                 $("#undo_delete").addClass("a_button");
-//                 $("#undo_goes_here").html('<button class="head_action a_button" id="undo_delete" name="undo_delete" >Undo Delete</button>')
-//                 $("#undo_goes_here").html('<a class="head_action a_button" id="undo_delete" href="">Undo Delete</a>')
             }
         },
         error: function( xhr, status, errorThrown ) {

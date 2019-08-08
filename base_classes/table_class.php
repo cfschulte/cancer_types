@@ -93,7 +93,7 @@ class table_class {
    function header() {
 ?>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <?php
   // load the javascripts -- this is a little confusing and could be done more better.
@@ -150,7 +150,7 @@ class table_class {
   </div>
 
 </div>
-
+</body>
 <?php 
    }
 
@@ -162,9 +162,6 @@ class table_class {
 <div class="page_header">
 <div class="in_header">
  <h1 ><?php echo $this->title; ?></h1>
-<!-- 
- <a class="head_action a_button" id="logout_button" href="#">Log Out</a>
- -->
 
 <?php
     $this->additional_page_header_stuff();
@@ -300,7 +297,6 @@ class table_class {
         } else {
             $sql = $this->get_sql();
             $db_table = $db_obj->getTableNoParams($sql);
-//             showArray($db_table);
         }
         
         $db_obj->closeDB();

@@ -134,24 +134,9 @@ button.semi_faux {
 }
 
 a.faux_button:link, a.faux_button:visited, a.faux_button:active, a.faux_button:hover {
-//     color: #000;
-//     background-color: #FFF;
     cursor: default;
-//     font-size:85%;
-//     border: 1px solid #ddd; 
-//     border-radius: 3px;
 }
 
-/* 
-Making a real, submit input button look and act like a faux_button. It turns out 
-that actual "button" elements are flakey with enable/disable and changing pointer
-types.
-*/
-
-.faux_faux_button {
-    margin-left: 3em;
-    font-size: 140%;
-}
 
 /* used for enabling and disabling the print button */
 .disabled_link {

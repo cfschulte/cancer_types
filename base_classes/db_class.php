@@ -23,6 +23,7 @@ class db_class
         global $DB_SERVER;
 
         try {
+//             $this->conn = @new mysqli($DB_SERVER, $DB_USER, $DB_PASSWORD , $DATABASE, $DB_PORT);
             $this->conn = @new mysqli($DB_SERVER, $DB_USER, $DB_PASSWORD , $DATABASE);
             if ($this->conn->connect_error) {
                 throw new Exception('Database connection failed again: ' . $this->conn->connect_error);

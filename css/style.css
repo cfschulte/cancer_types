@@ -29,7 +29,7 @@ button {
   width: 100%;
   background-color: #8EA29F;
   z-index: 10;
-  opacity: 1;
+  opacity: 1.0;
   position: fixed;
 }
 
