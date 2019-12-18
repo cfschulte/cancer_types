@@ -18,7 +18,7 @@ CREATE TABLE `backup_deleted_entries` (
   `entry_data` text,
   `time_saved` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,7 +51,7 @@ CREATE TABLE `backup_table` (
   `value_date` date DEFAULT NULL,
   `time_saved` bigint(20) NOT NULL,
   PRIMARY KEY (`backup_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -72,7 +72,7 @@ CREATE TABLE `cancer_type` (
 
     primary_trt_program  int DEFAULT 0,
    PRIMARY KEY (`id`)
- )  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+ )  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -87,7 +87,7 @@ CREATE TABLE `primary_anatomical_site` (
   `table_index` int(11) NOT NULL,
   `descriptor` varchar(75) NOT NULL,
   PRIMARY KEY (`table_index`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOAD DATA LOCAL INFILE 'primary_anatomical_site.txt' INTO TABLE primary_anatomical_site FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' (table_index,descriptor);
@@ -102,7 +102,7 @@ CREATE TABLE `treatment_programs` (
    table_index              int    NOT NULL,
    descriptor      varchar(75)  NOT NULL,
    PRIMARY KEY (`table_index`)
-)   ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 LOAD DATA LOCAL INFILE 'treatment_programs.txt' INTO TABLE treatment_programs FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' (table_index,descriptor);
 
 
@@ -125,4 +125,4 @@ CREATE TABLE `treatment_program_list` (
 --    FOREIGN KEY (`treat_prog_id`) 
 --        REFERENCES treatment_program (treat_prog_id),
    PRIMARY KEY (tp_list_id)
-)  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+)  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
