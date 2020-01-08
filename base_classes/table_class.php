@@ -234,7 +234,7 @@ class table_class {
  /*************************************************************************/  
    // table_body
    function table_body() {
-        $db_table =$this->getDBTable();
+        $db_table = $this->getDBTable();
         
         echo "<tbody>\n";
         foreach( $db_table as $row ) {
@@ -296,6 +296,7 @@ class table_class {
             $db_table = $this->table_from_get_params();
         } else {
             $sql = $this->get_sql();
+            
             $db_table = $db_obj->getTableNoParams($sql);
         }
         

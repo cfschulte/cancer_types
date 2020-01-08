@@ -5,11 +5,7 @@
 // Since the calling files already have essentials required, requiring
 // it again conflicts. It seems odd since require_once is supposed to 
 // only 
-// require_once "../essentials.php";
-//
-//  2020-01-08 - I'm going to use this project to make a postgresql version 
-//    of the database interacter.
-//  
+// require_once "../essentials.php";  
 
 require_once "db_config.php";
   
