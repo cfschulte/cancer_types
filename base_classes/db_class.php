@@ -314,10 +314,17 @@ class db_class
   // This is like safeInsertUpdateDelete except that it will return a table. 
   //  It is useful for more selective or inclusive search queries 
     function safeSelect($sql, $typeStr, $paramList) {
-        $stmt = $this->prepBindExMultiParams($sql, $typeStr, $paramList);
-        
-        $mysqli_result = $stmt->get_result();
-        return $mysqli_result->fetch_all(MYSQLI_ASSOC); 
+		$pg_sql = $this->mysql2Postgres($sql);
+		$prep_result = pg_prepare($this->conn, 'current_transaction', $pg_sql);
+		$exe_result  = pg_execute($this->conn, 'current_transaction', $paramList);
+
+		$the_array   = pg_fetch_array($exe_result, 0, PGSQL_ASSOC);
+		
+		return $the_array;
+//         $stmt = $this->prepBindExMultiParams($sql, $typeStr, $paramList);
+//         
+//         $mysqli_result = $stmt->get_result();
+//         return $mysqli_result->fetch_all(MYSQLI_ASSOC); 
     }
 
   /////////////////////////////////
@@ -325,7 +332,8 @@ class db_class
   // This is the workhorse
   /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
     function safeInsertUpdateDelete($sql, $typeStr, $paramList) {
-        return $this->safeInsertUpdateDelete_pg($sql,  $paramList);
+        $pg_sql = $this->mysql2Postgres($sql);
+        return $this->safeInsertUpdateDelete_pg($pg_sql,  $paramList);
     }
 
   /////////////////////////////////
@@ -337,17 +345,17 @@ class db_class
         	// convert the mysqli formatted SQL string into something postgresql can use.
         	//  
 //         	showDebug($my_sql);
-        	$exploded = str_split($my_sql);
-//         	showArray($exploded);
-        	$param_count = 1;
-        	$pg_sql = '';
-        	foreach($exploded as $char){
-        		if($char == '?'){
-        			$char = '$' . "$param_count";
-        			$param_count++;
-        		}
-        		$pg_sql .= $char;
-        	}
+//         	$exploded = str_split($my_sql);
+// //         	showArray($exploded);
+//         	$param_count = 1;
+//         	$pg_sql = '';
+//         	foreach($exploded as $char){
+//         		if($char == '?'){
+//         			$char = '$' . "$param_count";
+//         			$param_count++;
+//         		}
+//         		$pg_sql .= $char;
+//         	}
 			
 			// prepare the statement 
 			$prep_result = pg_prepare($this->conn, 'current_transaction', $pg_sql);
@@ -365,12 +373,32 @@ class db_class
        
     }
 
+/////////////////////////////////
+// Convert a mysqli SQL statement to a PostgreSQL statement 
+	function mysql2Postgres($my_sql){
+		$exploded = str_split($my_sql);
+//         	showArray($exploded);
+		$param_count = 1;
+		$pg_sql = '';
+		foreach($exploded as $char){
+			if($char == '?'){
+				$char = '$' . "$param_count";
+				$param_count++;
+			}
+			$pg_sql .= $char;
+		}
+		
+		return $pg_sql;
+	}
+
 
   /////////////////////////////////
   // Preparee, bind, execute, and return the mysqli_result
   // This is where most of the errors occur. 
- //    function  prepBindExMultiParams($sql, $typeStr, $paramList){
-//         try {
+    function  prepBindExMultiParams($sql, $typeStr, $paramList){
+        try {
+        	$pg_sql = $this->mysql2Postgres($sql);
+        	$result = pg_prepare($this->conn, 'current_transaction', $pg_sql);
 //             $stmt = $this->conn->prepare($sql);
 //             if (! $stmt) {
 //                 throw new Exception();
@@ -397,12 +425,13 @@ class db_class
 //                 throw new Exception();
 //             } 
 //             return $stmt;
-//         } catch(Exception $e) {
-//             echo "Fail in prepBindExMultiParams $sql: " . $e->getLine()  . 
-//                  ": " . $this->conn->error;
-//             return null;        
-//         }
-//     }
+            return array('result' => $result, 'current_transaction');
+        } catch(Exception $e) {
+            echo "Fail in prepBindExMultiParams $sql: " . $e->getLine()  . 
+                 ": " . $this->conn->error;
+            return null;        
+        }
+    }
 
   //////////////////////////////////////////////////////////
   // A few higher level functions
