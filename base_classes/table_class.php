@@ -301,7 +301,7 @@ class table_class {
         }
         
         $db_obj->closeDB();
-        
+
         return $db_table;
     }
    

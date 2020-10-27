@@ -276,7 +276,7 @@ class form_class {
         $values .= ')';
         $sql .= $columns . ' VALUES ' . $values;
         
-        showArray(array($sql, $typeList, $paramList));
+//         showArray(array($sql, $typeList, $paramList));
         
         $db_obj->closeDB();
         
@@ -321,7 +321,8 @@ class form_class {
 //         showArray(array($sql, $keyType, $identifier));
 //         showArray($db_table);
         
-        return $db_table[0];
+//         return $db_table[0]; -- mysql
+        return $db_table;
    }
 
     ///////
